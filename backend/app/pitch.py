@@ -290,6 +290,10 @@ TAIL_QUIET_DB = 4.5        # ...and this much quieter than the typical note
 GLIDE_MAX_SEC = 0.20       # a slide into the next note is at most this long
 TINY_SEC = 0.0             # (disabled: hurt real short notes in testing)
 GLIDE_NEAR = 1.3           # a slide ends within this many semitones of the next note
+SWOOP_MAX_SEC = 0.12       # a fragment this short whose pitch moves a lot is a transition
+SWOOP_SEMITONES = 1.5
+WOBBLE_MAX_SEC = 0.12      # fragments at a phrase start before a much longer note
+WOBBLE_RATIO = 4.0
 CORE_TRIM = 0.0            # fraction trimmed from each end of a note before taking its pitch
 WEIGHTED_OFFSET = 0.0      # 0 = every note votes equally on the singer's tuning
 
@@ -345,8 +349,43 @@ def _clean_segments(segs, midi, rms) -> list[_Seg]:
             keep.append(s)
         S = keep
 
-    # 2) slides into the next note, and tiny transition fragments
+    # 2a) fast swoops between notes: very short, pitch moving fast -> part of the next note
     out: list[_Seg] = []
+    for i, s in enumerate(S):
+        if s.dur <= SWOOP_MAX_SEC and abs(s.f_end - s.f_start) >= SWOOP_SEMITONES:
+            nxt = S[i + 1] if i + 1 < len(S) else None
+            if nxt is not None and touching(s, nxt):
+                S[i + 1] = _Seg(s.a, nxt.b, nxt.f, s.f_start, nxt.f_end, nxt.db)
+                continue
+            if out and touching(out[-1], s):
+                p = out[-1]
+                out[-1] = _Seg(p.a, s.b, p.f, p.f_start, s.f_end, p.db)
+                continue
+        out.append(s)
+    S = out
+
+    # 2b) wobbly fragments at the start of a phrase, before the first real note
+    #     (possibly several in a row: the voice "finding" the pitch)
+    out = []
+    i = 0
+    while i < len(S):
+        phrase_start = not out or gap(out[-1], S[i]) >= PHRASE_GAP_SEC
+        j = i
+        while phrase_start and j + 1 < len(S) and S[j].dur <= WOBBLE_MAX_SEC and touching(S[j], S[j + 1]):
+            j += 1
+        if j > i:
+            frags, real = S[i:j], S[j]
+            if real.dur >= WOBBLE_RATIO * max(f.dur for f in frags) \
+                    and all(abs(f.f - real.f) <= 3.0 for f in frags):
+                S[j] = _Seg(frags[0].a, real.b, real.f, frags[0].f_start, real.f_end, real.db)
+                i = j
+                continue
+        out.append(S[i])
+        i += 1
+    S = out
+
+    # 2c) slides into the next note, and tiny transition fragments
+    out = []
     i = 0
     while i < len(S):
         s = S[i]

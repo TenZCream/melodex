@@ -191,3 +191,16 @@ fake notes.
 wrong song to strong 0.71. Synthetic: hum 100%, voice 97%, whistle 100%, noisy 94%
 note accuracy; 100% songs identified. Search suite unchanged.
 Caveat: tuned on one voice (5 recordings) — collect a few more voices if possible.
+
+### Checkpoint 4 — transition filtering (Sat ~4:10 PM PT)
+
+Lexing asked about a loudness gate to ignore stray pitches. Measured: the stray notes
+were **not quieter** than real notes (real notes span −3 to −20 dB), so a volume gate
+would delete real notes. What distinguishes them is speed: < 0.12 s with the pitch
+swooping 1.5+ semitones (the voice travelling between notes).
+
+**Added:** swoop filter (short + fast-moving → part of the next note) and phrase-start
+wobble filter (a run of tiny fragments before the first real note).
+
+**Result:** 9/9 real recordings correct at #1. Twinkle: wrong song → strong 0.95;
+Happy Birthday: 0.79 → 0.93. Synthetic suites unchanged.

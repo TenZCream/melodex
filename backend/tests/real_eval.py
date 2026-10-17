@@ -17,6 +17,7 @@ from app.search import MelodyIndex  # noqa: E402
 EXPECTED = {
     "171151": "Mary", "171208": "Mary", "171216": "Mary", "171222": "Mary",
     "172450": "Twinkle",
+    "175731": "Twinkle", "175800": "Twinkle", "175824": "Mary", "175908": "Happy Birthday",
 }
 
 

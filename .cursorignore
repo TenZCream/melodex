@@ -1,0 +1,4 @@
+# Claude maintains these files. Keep Cursor's AI from reading or editing them,
+# so it can't save stale copies over newer versions.
+backend/
+PROJECT.md
