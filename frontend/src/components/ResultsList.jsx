@@ -1,6 +1,7 @@
+import PlayButton from './PlayButton'
 import './ResultsList.css'
 
-export default function ResultsList({ results = [], indexSize }) {
+export default function ResultsList({ results = [], indexSize, playingId, onPlay }) {
   return (
     <section className="results" aria-labelledby="results-heading">
       <div className="results__head">
@@ -16,7 +17,16 @@ export default function ResultsList({ results = [], indexSize }) {
             return (
               <li key={result.id} className="result">
                 <span className="result__rank">{result.rank}</span>
-                <p className="result__title">{result.title}</p>
+                <div className="result__title-row">
+                  <p className="result__title">{result.title}</p>
+                  <PlayButton
+                    playing={playingId === result.id}
+                    label={playingId === result.id ? `Stop ${result.title}` : `Play ${result.title}`}
+                    onClick={() => onPlay?.(result)}
+                  >
+                    ▶ Play
+                  </PlayButton>
+                </div>
                 <span className={`result__badge result__badge--${result.label}`}>{result.label}</span>
                 <div className="result__sub">
                   <p className="result__composer">{result.composer}</p>

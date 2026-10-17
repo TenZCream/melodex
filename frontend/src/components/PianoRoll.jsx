@@ -1,21 +1,10 @@
 import { useEffect, useId, useRef, useState } from 'react'
+import { isSharp, midiLabel } from '../music'
+import PlayButton from './PlayButton'
 import './PianoRoll.css'
 
-const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-const SHARPS = new Set([1, 3, 6, 8, 10])
 const HEIGHT = 312
 const PAD = { top: 14, right: 14, bottom: 28, left: 52 }
-
-function midiLabel(pitch) {
-  const rounded = Math.round(pitch)
-  const name = NOTE_NAMES[((rounded % 12) + 12) % 12]
-  const octave = Math.floor(rounded / 12) - 1
-  return `${name}${octave}`
-}
-
-function isSharp(pitch) {
-  return SHARPS.has(((pitch % 12) + 12) % 12)
-}
 
 function pitchSegments(times, midi, xOf, yOf) {
   const count = Math.min(times?.length ?? 0, midi?.length ?? 0)
@@ -39,7 +28,7 @@ function pitchSegments(times, midi, xOf, yOf) {
   )
 }
 
-export default function PianoRoll({ query }) {
+export default function PianoRoll({ query, playing = false, activeIndex = -1, onPlay }) {
   const notes = query?.notes ?? []
   const track = query?.pitch_track
   const wrapRef = useRef(null)
@@ -98,11 +87,16 @@ export default function PianoRoll({ query }) {
   return (
     <section className="piano" aria-labelledby="piano-heading">
       <div className="piano__head">
-        <h2 id="piano-heading">What you hummed</h2>
-        <p>
-          {query?.key ? `${query.key}` : 'Detected phrase'}
-          {query?.num_notes ? ` · ${query.num_notes} notes` : ''}
-        </p>
+        <div>
+          <h2 id="piano-heading">What you hummed</h2>
+          <p>
+            {query?.key ? `${query.key}` : 'Detected phrase'}
+            {query?.num_notes ? ` · ${query.num_notes} notes` : ''}
+          </p>
+        </div>
+        <PlayButton playing={playing} onClick={onPlay} label={playing ? 'Stop playback' : 'Play what you hummed'}>
+          ▶ Play what you hummed
+        </PlayButton>
       </div>
       <div className="piano__canvas" ref={wrapRef}>
         {ready ? (
@@ -172,13 +166,21 @@ export default function PianoRoll({ query }) {
                   <path className="piano__curve" d={d} />
                 </g>
               ))}
-              {notes.map((note) => {
+              {notes.map((note, index) => {
                 const x = xOf(note.start)
                 const w = Math.max(2, xOf(note.start + note.duration) - x)
                 const y = yOf(note.pitch) - barH / 2
+                const active = index === activeIndex
                 return (
-                  <g key={`${note.start}-${note.pitch}`}>
-                    <rect className="piano__note" x={x} y={y} width={w} height={barH} rx="3" />
+                  <g key={`${note.start}-${note.pitch}-${index}`}>
+                    <rect
+                      className={active ? 'piano__note piano__note--active' : 'piano__note'}
+                      x={x}
+                      y={y}
+                      width={w}
+                      height={barH}
+                      rx="3"
+                    />
                     {w > 36 ? (
                       <text
                         className="piano__note-name"

@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react'
 import ErrorBanner from './components/ErrorBanner'
 import Header from './components/Header'
+import ModeToggle from './components/ModeToggle'
+import PianoKeyboard from './components/PianoKeyboard'
 import PianoRoll from './components/PianoRoll'
 import RecordButton from './components/RecordButton'
 import ResultsList from './components/ResultsList'
 import VerdictBanner from './components/VerdictBanner'
 import { API_BASE } from './config'
+import { segmentToSeconds } from './music'
+import { playSequence, stopPlayback } from './playback'
 import mockSearch from './mocks/search_strong_match.json'
 import './App.css'
 
@@ -36,6 +40,8 @@ export default function App() {
   const [result, setResult] = useState(mockMode ? mockSearch : null)
   const [searching, setSearching] = useState(false)
   const [error, setError] = useState('')
+  const [mode, setMode] = useState('hum')
+  const [playback, setPlayback] = useState(null)
 
   useEffect(() => {
     if (mockMode) return undefined
@@ -57,8 +63,11 @@ export default function App() {
     return () => controller.abort()
   }, [mockMode])
 
-  async function onRecorded(blob) {
+  useEffect(() => () => stopPlayback(), [])
+
+  async function runSearch(request) {
     setError('')
+    stopPlayback()
     if (mockMode) {
       setResult(mockSearch)
       return
@@ -66,11 +75,9 @@ export default function App() {
 
     setSearching(true)
     try {
-      const form = new FormData()
-      form.append('file', blob, 'hum.wav')
       let response
       try {
-        response = await fetch(`${API_BASE}/api/search/audio`, { method: 'POST', body: form })
+        response = await request()
       } catch {
         setError(SERVER_DOWN)
         return
@@ -87,22 +94,83 @@ export default function App() {
     }
   }
 
+  function onRecorded(blob) {
+    return runSearch(() => {
+      const form = new FormData()
+      form.append('file', blob, 'hum.wav')
+      return fetch(`${API_BASE}/api/search/audio`, { method: 'POST', body: form })
+    })
+  }
+
+  function onNotes(notes) {
+    const payload = notes.map((note) => ({
+      pitch: note.pitch,
+      start: Number(note.start.toFixed(3)),
+      duration: Number(note.duration.toFixed(3)),
+    }))
+    return runSearch(() =>
+      fetch(`${API_BASE}/api/search/notes`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ notes: payload }),
+      }),
+    )
+  }
+
+  function playQuery() {
+    if (playback?.id === 'query') {
+      stopPlayback()
+      return
+    }
+    const notes = (result?.query?.notes ?? []).map((note) => ({
+      pitch: note.pitch,
+      start: note.start,
+      duration: note.duration,
+    }))
+    void playSequence('query', notes, setPlayback)
+  }
+
+  function playResult(match) {
+    if (playback?.id === match.id) {
+      stopPlayback()
+      return
+    }
+    void playSequence(match.id, segmentToSeconds(match), setPlayback)
+  }
+
   return (
     <div className="app">
       <Header connection={connection} indexSize={indexSize} />
       <main className="stage">
-        <RecordButton
-          busy={searching}
-          invite={!result && !searching}
-          onRecordStart={() => setError('')}
-          onRecorded={onRecorded}
-        />
+        <div className="entry">
+          <ModeToggle mode={mode} onChange={setMode} />
+          {mode === 'hum' ? (
+            <RecordButton
+              busy={searching}
+              invite={!result && !searching}
+              onRecordStart={() => setError('')}
+              onRecorded={onRecorded}
+            />
+          ) : (
+            <PianoKeyboard busy={searching} onSearch={onNotes} />
+          )}
+        </div>
         <ErrorBanner message={error} />
         {result ? (
           <>
             <VerdictBanner verdict={result.verdict} warnings={result.warnings} />
-            <PianoRoll query={result.query} />
-            <ResultsList results={result.results} indexSize={result.index_size} />
+            <PianoRoll
+              query={result.query}
+              playing={playback?.id === 'query'}
+              activeIndex={playback?.id === 'query' ? playback.index : -1}
+              onPlay={playQuery}
+            />
+            <ResultsList
+              results={result.results}
+              indexSize={result.index_size}
+              playingId={playback?.id}
+              onPlay={playResult}
+            />
           </>
         ) : null}
       </main>

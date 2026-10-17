@@ -1,6 +1,6 @@
 .piano__head {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 12px;
@@ -91,6 +91,10 @@
 
 .piano__note {
   fill: var(--accent);
+}
+
+.piano__note--active {
+  fill: #f8e7c8;
 }
 
 .piano__note-name {
