@@ -1,0 +1,418 @@
+{
+ "seed": {
+  "used": false,
+  "key": "C major",
+  "num_notes": 0,
+  "tempo_bpm": 120.0,
+  "notes": []
+ },
+ "ideas": [
+  {
+   "id": "idea-1",
+   "kind": "fresh",
+   "title": "Fresh idea",
+   "description": "A new phrase in C major.",
+   "follows_seed": false,
+   "notes": [
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 0.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 59,
+     "name": "B3",
+     "start": 1.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 53,
+     "name": "F3",
+     "start": 2.0,
+     "duration": 1.5
+    },
+    {
+     "pitch": 53,
+     "name": "F3",
+     "start": 3.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 4.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 4.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 59,
+     "name": "B3",
+     "start": 5.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 5.5,
+     "duration": 2.0
+    }
+   ],
+   "tempo_bpm": 120.0,
+   "novelty": {
+    "score": 0.81,
+    "label": "novel",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cRow, Row, Row Your Boat\u201d (19% similar).",
+    "nearest": {
+     "id": "famous-010",
+     "title": "Row, Row, Row Your Boat",
+     "composer": "Traditional",
+     "similarity": 0.19
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "C"
+    },
+    {
+     "start": 2.0,
+     "duration": 2.0,
+     "roman": "IV",
+     "symbol": "F"
+    },
+    {
+     "start": 4.0,
+     "duration": 2.0,
+     "roman": "V",
+     "symbol": "G"
+    },
+    {
+     "start": 6.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "C"
+    }
+   ]
+  },
+  {
+   "id": "idea-2",
+   "kind": "fresh",
+   "title": "Fresh idea",
+   "description": "A new phrase in C major.",
+   "follows_seed": false,
+   "notes": [
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 0.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 1.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 59,
+     "name": "B3",
+     "start": 2.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 3.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 5.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 59,
+     "name": "B3",
+     "start": 5.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 55,
+     "name": "G3",
+     "start": 6.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 48,
+     "name": "C3",
+     "start": 6.5,
+     "duration": 2.0
+    }
+   ],
+   "tempo_bpm": 120.0,
+   "novelty": {
+    "score": 0.81,
+    "label": "novel",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cYankee Doodle\u201d (19% similar).",
+    "nearest": {
+     "id": "famous-029",
+     "title": "Yankee Doodle",
+     "composer": "Traditional (American)",
+     "similarity": 0.19
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "C"
+    },
+    {
+     "start": 2.0,
+     "duration": 2.0,
+     "roman": "V",
+     "symbol": "G"
+    },
+    {
+     "start": 4.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "C"
+    },
+    {
+     "start": 6.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "C"
+    },
+    {
+     "start": 8.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "C"
+    }
+   ]
+  },
+  {
+   "id": "idea-3",
+   "kind": "fresh",
+   "title": "Fresh idea",
+   "description": "A new phrase in C major.",
+   "follows_seed": false,
+   "notes": [
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 0.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 59,
+     "name": "B3",
+     "start": 1.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 2.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 3.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 59,
+     "name": "B3",
+     "start": 4.0,
+     "duration": 1.5
+    },
+    {
+     "pitch": 69,
+     "name": "A4",
+     "start": 5.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 69,
+     "name": "A4",
+     "start": 6.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 6.5,
+     "duration": 2.0
+    }
+   ],
+   "tempo_bpm": 120.0,
+   "novelty": {
+    "score": 0.784,
+    "label": "novel",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cOde to Joy (Symphony No. 9)\u201d (22% similar).",
+    "nearest": {
+     "id": "famous-002",
+     "title": "Ode to Joy (Symphony No. 9)",
+     "composer": "Ludwig van Beethoven",
+     "similarity": 0.216
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "C"
+    },
+    {
+     "start": 2.0,
+     "duration": 2.0,
+     "roman": "V",
+     "symbol": "G"
+    },
+    {
+     "start": 4.0,
+     "duration": 2.0,
+     "roman": "V",
+     "symbol": "G"
+    },
+    {
+     "start": 6.0,
+     "duration": 2.0,
+     "roman": "IV",
+     "symbol": "F"
+    },
+    {
+     "start": 8.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "C"
+    }
+   ]
+  },
+  {
+   "id": "idea-4",
+   "kind": "fresh",
+   "title": "Fresh idea",
+   "description": "A new phrase in C major.",
+   "follows_seed": false,
+   "notes": [
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 0.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 1.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 2.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 69,
+     "name": "A4",
+     "start": 4.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 71,
+     "name": "B4",
+     "start": 6.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 7.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 8.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 72,
+     "name": "C5",
+     "start": 9.0,
+     "duration": 2.0
+    }
+   ],
+   "tempo_bpm": 120.0,
+   "novelty": {
+    "score": 0.741,
+    "label": "novel",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cIn the Hall of the Mountain King\u201d (26% similar).",
+    "nearest": {
+     "id": "famous-019",
+     "title": "In the Hall of the Mountain King",
+     "composer": "Edvard Grieg",
+     "similarity": 0.259
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "C"
+    },
+    {
+     "start": 2.0,
+     "duration": 2.0,
+     "roman": "V",
+     "symbol": "G"
+    },
+    {
+     "start": 4.0,
+     "duration": 2.0,
+     "roman": "IV",
+     "symbol": "F"
+    },
+    {
+     "start": 6.0,
+     "duration": 2.0,
+     "roman": "V",
+     "symbol": "G"
+    },
+    {
+     "start": 8.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "C"
+    },
+    {
+     "start": 10.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "C"
+    }
+   ]
+  }
+ ],
+ "candidates_considered": 40,
+ "too_familiar_dropped": 6,
+ "index_size": 30
+}

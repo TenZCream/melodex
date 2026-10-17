@@ -29,6 +29,11 @@
   background: #101217;
 }
 
+.piano--compact .piano__canvas {
+  min-height: 176px;
+  border-radius: 10px;
+}
+
 .piano__svg {
   display: block;
 }

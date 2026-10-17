@@ -1,0 +1,581 @@
+{
+ "seed": {
+  "used": true,
+  "key": "Bb major",
+  "num_notes": 14,
+  "tempo_bpm": 109.0,
+  "notes": [
+   {
+    "pitch": 58,
+    "name": "A#3",
+    "start": 0.0,
+    "duration": 1.0
+   },
+   {
+    "pitch": 58,
+    "name": "A#3",
+    "start": 1.0,
+    "duration": 1.0
+   },
+   {
+    "pitch": 65,
+    "name": "F4",
+    "start": 2.0,
+    "duration": 1.0
+   },
+   {
+    "pitch": 65,
+    "name": "F4",
+    "start": 3.0,
+    "duration": 1.0
+   },
+   {
+    "pitch": 67,
+    "name": "G4",
+    "start": 4.0,
+    "duration": 1.0
+   },
+   {
+    "pitch": 67,
+    "name": "G4",
+    "start": 5.0,
+    "duration": 1.0
+   },
+   {
+    "pitch": 65,
+    "name": "F4",
+    "start": 6.0,
+    "duration": 2.0
+   },
+   {
+    "pitch": 63,
+    "name": "D#4",
+    "start": 8.0,
+    "duration": 1.0
+   },
+   {
+    "pitch": 63,
+    "name": "D#4",
+    "start": 9.0,
+    "duration": 1.0
+   },
+   {
+    "pitch": 62,
+    "name": "D4",
+    "start": 10.0,
+    "duration": 1.0
+   },
+   {
+    "pitch": 62,
+    "name": "D4",
+    "start": 11.0,
+    "duration": 1.0
+   },
+   {
+    "pitch": 60,
+    "name": "C4",
+    "start": 12.0,
+    "duration": 1.0
+   },
+   {
+    "pitch": 60,
+    "name": "C4",
+    "start": 13.0,
+    "duration": 1.0
+   },
+   {
+    "pitch": 58,
+    "name": "A#3",
+    "start": 14.0,
+    "duration": 2.0
+   }
+  ]
+ },
+ "ideas": [
+  {
+   "id": "idea-1",
+   "kind": "continuation",
+   "title": "Continuation",
+   "description": "What could come next: picks up where you stopped and brings it home.",
+   "follows_seed": true,
+   "notes": [
+    {
+     "pitch": 63,
+     "name": "D#4",
+     "start": 0.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 63,
+     "name": "D#4",
+     "start": 0.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 1.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 57,
+     "name": "A3",
+     "start": 2.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 57,
+     "name": "A3",
+     "start": 3.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 69,
+     "name": "A4",
+     "start": 4.0,
+     "duration": 1.5
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 5.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 6.0,
+     "duration": 2.0
+    }
+   ],
+   "tempo_bpm": 109.0,
+   "novelty": {
+    "score": 0.892,
+    "label": "novel",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cJingle Bells\u201d (11% similar).",
+    "nearest": {
+     "id": "famous-005",
+     "title": "Jingle Bells",
+     "composer": "James Lord Pierpont",
+     "similarity": 0.108
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "Bb"
+    },
+    {
+     "start": 2.0,
+     "duration": 2.0,
+     "roman": "V",
+     "symbol": "F"
+    },
+    {
+     "start": 4.0,
+     "duration": 2.0,
+     "roman": "V",
+     "symbol": "F"
+    },
+    {
+     "start": 6.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "Bb"
+    }
+   ]
+  },
+  {
+   "id": "idea-2",
+   "kind": "inversion",
+   "title": "Mirror",
+   "description": "Your phrase turned upside-down: every rise becomes a fall.",
+   "follows_seed": false,
+   "notes": [
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 0.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 1.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 51,
+     "name": "D#3",
+     "start": 2.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 51,
+     "name": "D#3",
+     "start": 3.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 50,
+     "name": "D3",
+     "start": 4.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 50,
+     "name": "D3",
+     "start": 5.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 51,
+     "name": "D#3",
+     "start": 6.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 53,
+     "name": "F3",
+     "start": 8.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 53,
+     "name": "F3",
+     "start": 9.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 55,
+     "name": "G3",
+     "start": 10.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 55,
+     "name": "G3",
+     "start": 11.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 57,
+     "name": "A3",
+     "start": 12.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 57,
+     "name": "A3",
+     "start": 13.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 14.0,
+     "duration": 2.0
+    }
+   ],
+   "tempo_bpm": 109.0,
+   "novelty": {
+    "score": 0.3,
+    "label": "echoes",
+    "message": "Echoes \u201cHot Cross Buns\u201d (70% similar) but isn't a match.",
+    "nearest": {
+     "id": "famous-016",
+     "title": "Hot Cross Buns",
+     "composer": "Traditional",
+     "similarity": 0.7
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "Bb"
+    },
+    {
+     "start": 2.0,
+     "duration": 2.0,
+     "roman": "IV",
+     "symbol": "Eb"
+    },
+    {
+     "start": 4.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "Bb"
+    },
+    {
+     "start": 6.0,
+     "duration": 2.0,
+     "roman": "IV",
+     "symbol": "Eb"
+    },
+    {
+     "start": 8.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "Bb"
+    },
+    {
+     "start": 10.0,
+     "duration": 2.0,
+     "roman": "IV",
+     "symbol": "Eb"
+    },
+    {
+     "start": 12.0,
+     "duration": 2.0,
+     "roman": "V",
+     "symbol": "F"
+    },
+    {
+     "start": 14.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "Bb"
+    }
+   ]
+  },
+  {
+   "id": "idea-3",
+   "kind": "sequence",
+   "title": "Sequence",
+   "description": "Your opening motif, restated on a new step of the scale.",
+   "follows_seed": false,
+   "notes": [
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 0.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 1.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 2.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 3.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 57,
+     "name": "A3",
+     "start": 4.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 57,
+     "name": "A3",
+     "start": 5.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 63,
+     "name": "D#4",
+     "start": 6.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 63,
+     "name": "D#4",
+     "start": 7.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 55,
+     "name": "G3",
+     "start": 8.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 55,
+     "name": "G3",
+     "start": 9.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 10.0,
+     "duration": 2.0
+    }
+   ],
+   "tempo_bpm": 109.0,
+   "novelty": {
+    "score": 0.469,
+    "label": "echoes",
+    "message": "Echoes \u201cJingle Bells\u201d (53% similar) but isn't a match.",
+    "nearest": {
+     "id": "famous-005",
+     "title": "Jingle Bells",
+     "composer": "James Lord Pierpont",
+     "similarity": 0.531
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "Bb"
+    },
+    {
+     "start": 2.0,
+     "duration": 2.0,
+     "roman": "V",
+     "symbol": "F"
+    },
+    {
+     "start": 4.0,
+     "duration": 2.0,
+     "roman": "V",
+     "symbol": "F"
+    },
+    {
+     "start": 6.0,
+     "duration": 2.0,
+     "roman": "IV",
+     "symbol": "Eb"
+    },
+    {
+     "start": 8.0,
+     "duration": 2.0,
+     "roman": "vi",
+     "symbol": "Gm"
+    },
+    {
+     "start": 10.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "Bb"
+    }
+   ]
+  },
+  {
+   "id": "idea-4",
+   "kind": "fresh",
+   "title": "Fresh idea",
+   "description": "A new phrase in Bb major.",
+   "follows_seed": false,
+   "notes": [
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 0.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 57,
+     "name": "A3",
+     "start": 1.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 2.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 4.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 5.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 69,
+     "name": "A4",
+     "start": 7.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 9.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 70,
+     "name": "A#4",
+     "start": 9.5,
+     "duration": 2.0
+    }
+   ],
+   "tempo_bpm": 109.0,
+   "novelty": {
+    "score": 0.891,
+    "label": "novel",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cOde to Joy (Symphony No. 9)\u201d (11% similar).",
+    "nearest": {
+     "id": "famous-002",
+     "title": "Ode to Joy (Symphony No. 9)",
+     "composer": "Ludwig van Beethoven",
+     "similarity": 0.109
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "Bb"
+    },
+    {
+     "start": 2.0,
+     "duration": 2.0,
+     "roman": "V",
+     "symbol": "F"
+    },
+    {
+     "start": 4.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "Bb"
+    },
+    {
+     "start": 6.0,
+     "duration": 2.0,
+     "roman": "V",
+     "symbol": "F"
+    },
+    {
+     "start": 8.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "Bb"
+    },
+    {
+     "start": 10.0,
+     "duration": 2.0,
+     "roman": "I",
+     "symbol": "Bb"
+    }
+   ]
+  }
+ ],
+ "candidates_considered": 37,
+ "too_familiar_dropped": 7,
+ "index_size": 30
+}

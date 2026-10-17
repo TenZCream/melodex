@@ -3,8 +3,8 @@ import { isSharp, midiLabel } from '../music'
 import PlayButton from './PlayButton'
 import './PianoRoll.css'
 
-const HEIGHT = 312
-const PAD = { top: 14, right: 14, bottom: 28, left: 52 }
+const FULL = { height: 312, pad: { top: 14, right: 14, bottom: 28, left: 52 } }
+const MINI = { height: 176, pad: { top: 10, right: 10, bottom: 22, left: 40 } }
 
 function pitchSegments(times, midi, xOf, yOf) {
   const count = Math.min(times?.length ?? 0, midi?.length ?? 0)
@@ -28,9 +28,17 @@ function pitchSegments(times, midi, xOf, yOf) {
   )
 }
 
-export default function PianoRoll({ query, playing = false, activeIndex = -1, onPlay }) {
+export default function PianoRoll({
+  query,
+  playing = false,
+  activeIndex = -1,
+  onPlay,
+  compact = false,
+  label = 'Piano roll of the hummed notes, with the pitch curve behind them.',
+}) {
   const notes = query?.notes ?? []
   const track = query?.pitch_track
+  const { height, pad } = compact ? MINI : FULL
   const wrapRef = useRef(null)
   const clipId = useId().replace(/:/g, '')
   const [width, setWidth] = useState(0)
@@ -39,14 +47,14 @@ export default function PianoRoll({ query, playing = false, activeIndex = -1, on
     const el = wrapRef.current
     if (!el) return undefined
     const observer = new ResizeObserver(([entry]) => {
-      setWidth(Math.max(280, Math.floor(entry.contentRect.width)))
+      setWidth(Math.max(compact ? 160 : 280, Math.floor(entry.contentRect.width)))
     })
     observer.observe(el)
     return () => observer.disconnect()
-  }, [])
+  }, [compact])
 
-  const plotW = Math.max(1, width - PAD.left - PAD.right)
-  const plotH = HEIGHT - PAD.top - PAD.bottom
+  const plotW = Math.max(1, width - pad.left - pad.right)
+  const plotH = height - pad.top - pad.bottom
 
   const notePitches = notes.map((note) => note.pitch)
   const trackPitches = (track?.midi ?? []).filter((value) => value != null)
@@ -63,8 +71,8 @@ export default function PianoRoll({ query, playing = false, activeIndex = -1, on
   const timePad = Math.max(0.05, (t1 - t0) * 0.02)
   const timeSpan = Math.max(0.001, t1 - t0 + timePad * 2)
 
-  const xOf = (time) => PAD.left + ((time - (t0 - timePad)) / timeSpan) * plotW
-  const yOf = (pitch) => PAD.top + ((maxPitch - pitch) / pitchSpan) * plotH
+  const xOf = (time) => pad.left + ((time - (t0 - timePad)) / timeSpan) * plotW
+  const yOf = (pitch) => pad.top + ((maxPitch - pitch) / pitchSpan) * plotH
   const rowH = plotH / pitchSpan
 
   const lanes = []
@@ -76,50 +84,54 @@ export default function PianoRoll({ query, playing = false, activeIndex = -1, on
   if (ready) {
     const first = Math.ceil((t0 - timePad) / tickStep) * tickStep
     for (let second = Math.max(0, first); second <= t1 + timePad; second += tickStep) {
-      const x = PAD.left + ((second - (t0 - timePad)) / timeSpan) * plotW
-      if (x >= PAD.left + 14 && x <= width - PAD.right - 10) ticks.push(second)
+      const x = pad.left + ((second - (t0 - timePad)) / timeSpan) * plotW
+      if (x >= pad.left + 14 && x <= width - pad.right - 10) ticks.push(second)
     }
   }
 
   const curves = ready ? pitchSegments(track?.times, track?.midi, xOf, yOf) : []
   const barH = Math.min(14, Math.max(7, rowH * 0.42))
 
+  const Tag = compact ? 'div' : 'section'
+
   return (
-    <section className="piano" aria-labelledby="piano-heading">
-      <div className="piano__head">
-        <div>
-          <h2 id="piano-heading">What you hummed</h2>
-          <p>
-            {query?.key ? `${query.key}` : 'Detected phrase'}
-            {query?.num_notes ? ` · ${query.num_notes} notes` : ''}
-          </p>
+    <Tag className={compact ? 'piano piano--compact' : 'piano'} aria-labelledby={compact ? undefined : 'piano-heading'}>
+      {compact ? null : (
+        <div className="piano__head">
+          <div>
+            <h2 id="piano-heading">What you hummed</h2>
+            <p>
+              {query?.key ? `${query.key}` : 'Detected phrase'}
+              {query?.num_notes ? ` · ${query.num_notes} notes` : ''}
+            </p>
+          </div>
+          <PlayButton playing={playing} onClick={onPlay} label={playing ? 'Stop playback' : 'Play what you hummed'}>
+            ▶ Play what you hummed
+          </PlayButton>
         </div>
-        <PlayButton playing={playing} onClick={onPlay} label={playing ? 'Stop playback' : 'Play what you hummed'}>
-          ▶ Play what you hummed
-        </PlayButton>
-      </div>
+      )}
       <div className="piano__canvas" ref={wrapRef}>
         {ready ? (
             <svg
             className="piano__svg"
             width={width}
-            height={HEIGHT}
-            viewBox={`0 0 ${width} ${HEIGHT}`}
+            height={height}
+            viewBox={`0 0 ${width} ${height}`}
             role="img"
-            aria-label="Piano roll of the hummed notes, with the pitch curve behind them."
+            aria-label={label}
           >
             <defs>
               <clipPath id={clipId}>
-                <rect x={PAD.left} y={PAD.top} width={plotW} height={plotH} />
+                <rect x={pad.left} y={pad.top} width={plotW} height={plotH} />
               </clipPath>
             </defs>
-            <rect className="piano__board" x="0" y="0" width={width} height={HEIGHT} rx="12" />
+            <rect className="piano__board" x="0" y="0" width={width} height={height} rx="12" />
             {lanes.map((pitch) => (
               <g key={pitch}>
                 {isSharp(pitch) ? (
                   <rect
                     className="piano__lane"
-                    x={PAD.left}
+                    x={pad.left}
                     y={yOf(pitch + 0.5)}
                     width={plotW}
                     height={rowH}
@@ -127,15 +139,15 @@ export default function PianoRoll({ query, playing = false, activeIndex = -1, on
                 ) : null}
                 <line
                   className={pitch % 12 === 0 ? 'piano__grid piano__grid--c' : 'piano__grid'}
-                  x1={PAD.left}
-                  x2={PAD.left + plotW}
+                  x1={pad.left}
+                  x2={pad.left + plotW}
                   y1={yOf(pitch)}
                   y2={yOf(pitch)}
                 />
                 {rowH >= 15 ? (
                   <text
                     className={isSharp(pitch) ? 'piano__axis piano__axis--sharp' : 'piano__axis'}
-                    x={PAD.left - 8}
+                    x={pad.left - 8}
                     y={yOf(pitch)}
                     textAnchor="end"
                     dominantBaseline="middle"
@@ -151,10 +163,10 @@ export default function PianoRoll({ query, playing = false, activeIndex = -1, on
                   className="piano__beat"
                   x1={xOf(second)}
                   x2={xOf(second)}
-                  y1={PAD.top}
-                  y2={PAD.top + plotH}
+                  y1={pad.top}
+                  y2={pad.top + plotH}
                 />
-                <text className="piano__time" x={xOf(second)} y={HEIGHT - 8} textAnchor="middle">
+                <text className="piano__time" x={xOf(second)} y={height - 8} textAnchor="middle">
                   {second}s
                 </text>
               </g>
@@ -181,7 +193,7 @@ export default function PianoRoll({ query, playing = false, activeIndex = -1, on
                       height={barH}
                       rx="3"
                     />
-                    {w > 36 ? (
+                    {!compact && w > 36 ? (
                       <text
                         className="piano__note-name"
                         x={x + 6}
@@ -198,12 +210,14 @@ export default function PianoRoll({ query, playing = false, activeIndex = -1, on
           </svg>
         ) : null}
       </div>
-      <p className="piano__legend">
-        <span className="piano__swatch piano__swatch--curve" />
-        Pitch
-        <span className="piano__swatch piano__swatch--note" />
-        Notes
-      </p>
-    </section>
+      {compact ? null : (
+        <p className="piano__legend">
+          <span className="piano__swatch piano__swatch--curve" />
+          Pitch
+          <span className="piano__swatch piano__swatch--note" />
+          Notes
+        </p>
+      )}
+    </Tag>
   )
 }

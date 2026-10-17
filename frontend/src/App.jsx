@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import ErrorBanner from './components/ErrorBanner'
+import ExplorePanel from './components/ExplorePanel'
 import Header from './components/Header'
 import ModeToggle from './components/ModeToggle'
 import PianoKeyboard from './components/PianoKeyboard'
@@ -173,6 +174,17 @@ export default function App() {
             />
           </>
         ) : null}
+        <ExplorePanel
+          key={
+            result?.query?.notes
+              ? result.query.notes.map((note) => `${note.pitch}:${note.start}:${note.duration}`).join('|')
+              : 'idle'
+          }
+          queryNotes={result ? (result.query?.notes ?? []) : null}
+          mockMode={mockMode}
+          playback={playback}
+          onPlayback={setPlayback}
+        />
       </main>
     </div>
   )
