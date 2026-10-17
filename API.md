@@ -125,6 +125,70 @@ Errors:
 
 ---
 
-## Coming later (not in v1 — don't build against these yet)
-- `POST /api/generate` — melodic ideas + novelty relative to the index
+## POST /api/generate  (Explore)
+Generate new melodic ideas, each checked against the index. Mocks:
+`frontend-mocks/generate_from_hum.json`, `frontend-mocks/generate_fresh.json`.
+
+Request:
+```json
+{
+  "notes": [ { "pitch": 58, "start": 0.3, "duration": 0.5 }, ... ],
+  "num_ideas": 4,
+  "seed": null
+}
+```
+- `notes`: optional. Pass the user's phrase (e.g. `query.notes` from a search response,
+  in seconds) to build on it. Omit or send `[]` for fresh ideas in C major.
+  1–2 notes → 400. At least 3 notes to build on.
+- `num_ideas`: optional, 1–8, default 4.
+- `seed`: optional integer for repeatable results. Omit it to get new ideas every call
+  (use that for a "Generate again" button).
+
+Response:
+```json
+{
+  "seed": {
+    "used": true, "key": "Bb major", "num_notes": 14, "tempo_bpm": 109,
+    "notes": [ Note, ... ]
+  },
+  "ideas": [
+    {
+      "id": "idea-1",
+      "kind": "continuation",
+      "title": "Continuation",
+      "description": "What could come next: picks up where you stopped and brings it home.",
+      "follows_seed": true,
+      "notes": [ Note, ... ],
+      "tempo_bpm": 109,
+      "novelty": {
+        "score": 0.89,
+        "label": "novel",
+        "message": "Not found among our 30 indexed melodies. Closest: “Jingle Bells” (11% similar).",
+        "nearest": { "id": "famous-005", "title": "Jingle Bells", "composer": "...", "similarity": 0.11 }
+      },
+      "chords": [ { "start": 0.0, "duration": 2.0, "roman": "I", "symbol": "Bb" }, ... ]
+    }
+  ],
+  "candidates_considered": 37,
+  "too_familiar_dropped": 7,
+  "index_size": 30
+}
+```
+- All `notes`, `chords[].start` and `chords[].duration` here are in **beats**.
+  Play with `seconds = beats * 60 / tempo_bpm`. `seed.notes` is the user's phrase
+  converted to beats at the same tempo.
+- `kind`: `continuation` | `inversion` (shown as "Mirror") | `sequence` | `rhythm`
+  (shown as "Rhythm flip") | `fresh`.
+- `follows_seed: true` means the idea is meant to be heard **right after** the user's
+  phrase: play `seed.notes`, then the idea's notes.
+- `novelty.label`: `novel` (score ≥ 0.5) or `echoes` (0.3–0.5). Ideas below 0.3
+  (too close to a known melody) are never returned; `too_familiar_dropped` counts them.
+- Novelty is always relative to the index. Say "not found in our index", never
+  "original".
+- Chords: one diatonic triad per 2 beats, ending on the home chord. Play them softly
+  under the melody (e.g. a pad playing the triad), or show them as labels above the notes.
+
+---
+
+## Coming later (not built yet)
 - `POST /api/explain` — Gemini explanation of a match

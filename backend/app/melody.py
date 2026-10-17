@@ -121,5 +121,12 @@ def estimate_key(pitches, durations=None) -> tuple[int, str, float]:
     return best
 
 
+KEY_NAMES = ["C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
+
+
 def key_name(tonic: int, mode: str) -> str:
-    return f"{NOTE_NAMES[tonic]} {mode}"
+    """Musician-friendly key spelling (flats for flat keys, e.g. 'Bb major')."""
+    name = KEY_NAMES[tonic]
+    if mode == "minor" and tonic in (1, 6, 8):     # C#m, F#m, G#m read better with sharps
+        name = NOTE_NAMES[tonic]
+    return f"{name} {mode}"

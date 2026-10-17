@@ -17,6 +17,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from .catalog import load_catalog
+from .generate import Explorer, novelty_label
 from .melody import Note, midi_to_name
 from .pitch import AudioError, transcribe
 from .search import MIN_QUERY_NOTES, MelodyIndex, describe_key
@@ -41,6 +42,7 @@ app.add_middleware(
 )
 
 INDEX = MelodyIndex(load_catalog())
+EXPLORER = Explorer(INDEX)
 
 
 # ------------------------------------------------------------------ models
@@ -50,6 +52,12 @@ class NoteIn(BaseModel):
     start: float = Field(ge=0)
     duration: float = Field(gt=0)
     name: str | None = None
+
+
+class GenerateRequest(BaseModel):
+    notes: list[NoteIn] = Field(default_factory=list, max_length=200)
+    num_ideas: int = Field(default=4, ge=1, le=8)
+    seed: int | None = None
 
 
 class NotesSearchRequest(BaseModel):
@@ -198,6 +206,45 @@ async def search_audio(file: UploadFile = File(...), top_k: int = Form(5)):
     durs = np.array([n.duration for n in tx.notes], dtype=float)
     return _run_search(pitches, onsets, durs, top_k, "audio",
                        pitch_track=_downsample_track(tx.times, tx.midi), warnings=warnings)
+
+
+@app.post("/api/generate")
+def generate(req: GenerateRequest):
+    seed_notes = [Note(n.pitch, n.start, n.duration) for n in sorted(req.notes, key=lambda n: n.start)]
+    if 0 < len(seed_notes) < 3:
+        raise HTTPException(400, "Give at least 3 notes to build on, or none for fresh ideas.")
+    out = EXPLORER.generate(seed_notes or None, num_ideas=req.num_ideas, rng_seed=req.seed)
+    tempo = out["seed"]["tempo_bpm"]
+    ideas = []
+    for k, idea in enumerate(out["ideas"], start=1):
+        label = novelty_label(idea.novelty)
+        near = idea.nearest
+        pct = round(near["similarity"] * 100)
+        if label == "novel":
+            msg = (f"Not found among our {len(INDEX)} indexed melodies. "
+                   f"Closest: “{near['title']}” ({pct}% similar).")
+        else:
+            msg = f"Echoes “{near['title']}” ({pct}% similar) but isn't a match."
+        ideas.append({
+            "id": f"idea-{k}",
+            "kind": idea.kind,
+            "title": idea.title,
+            "description": idea.description,
+            "follows_seed": idea.kind == "continuation",
+            "notes": [n.to_dict() for n in idea.notes],
+            "tempo_bpm": tempo,
+            "novelty": {"score": idea.novelty, "label": label, "message": msg,
+                        "nearest": near},
+            "chords": idea.chords,
+        })
+    seed = out["seed"]
+    return {
+        "seed": {**seed, "notes": [n.to_dict() for n in seed["notes"]]},
+        "ideas": ideas,
+        "candidates_considered": out["candidates_considered"],
+        "too_familiar_dropped": out["too_familiar_dropped"],
+        "index_size": len(INDEX),
+    }
 
 
 @app.get("/api/melodies")

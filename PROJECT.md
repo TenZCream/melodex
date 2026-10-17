@@ -93,11 +93,13 @@ React (Vite) frontend  ── HTTP/JSON ──►  FastAPI backend (Python)
 | M0 | Tools installed, GitHub repo created, API contract + mocks | both | ✅ done |
 | M1 | Note-based search works on 30 tunes (transposed + mid-song excerpts) | Claude | ✅ done |
 | M2 | Audio → notes works on synthetic hums | Claude | ✅ done |
-| M3 | API running locally on Lexing's laptop | both | in progress |
-| M4 | React MVP against mocks: record, piano, results, piano roll, playback | Lexing | in progress |
-| M5 | Frontend ↔ backend connected; 3–5 songs recognized from real voice | both | todo |
+| M3 | API running locally on Lexing's laptop | both | ✅ done |
+| M4 | React MVP: record, piano keys, results, piano roll, playback | Lexing | ✅ done |
+| M5 | Frontend ↔ backend connected; 3–5 songs recognized from real voice | both | ✅ done |
 | M6 | Devpost draft submitted (by 10:30 PM PT) | Lexing | todo |
-| M7+ | Explore/generation, Gemini, VEYZL, extras — **only after M5** | both | blocked |
+| M7 | Explore backend: `/api/generate` with novelty + chords | Claude | ✅ done |
+| M8 | Explore panel in React | Lexing | todo |
+| M9+ | Gemini, VEYZL, extras | both | todo |
 
 **Cut order if behind:** deployment → GoDaddy → MongoDB → chords → Gemini.
 Never cut working search or the demo video.
@@ -204,3 +206,19 @@ wobble filter (a run of tiny fragments before the first real note).
 
 **Result:** 9/9 real recordings correct at #1. Twinkle: wrong song → strong 0.95;
 Happy Birthday: 0.79 → 0.93. Synthetic suites unchanged.
+
+### Checkpoint 5 — Explore backend (Sat ~4:45 PM PT)
+
+**Built:** `backend/app/generate.py` + `POST /api/generate` (contract in API.md).
+- Generators: continuation (Markov chain over scale-degree steps trained on the index),
+  mirror (inversion), sequence, rhythm flip, fresh phrase. All in the user's key.
+- Every candidate is searched against the index; anything ≥ 70% similar to a known
+  melody is never returned (novelty < 0.3 dropped). Labels: `novel` / `echoes`.
+- Chord suggestions: one diatonic triad per 2 beats, ending on the home chord.
+
+**Tested** (`tests/test_generate.py`): ideas from 4 different seeds + fresh, 10 runs
+each: always in key (≥ 75% scale tones), always with chords, never "strong match"
+similar to any indexed song (20 runs on Happy Birthday). ~0.2 s per request.
+
+**Weak:** the Markov model only learns from 30 tunes, so fresh ideas are simple;
+inversions of very famous tunes often land in "echoes".
