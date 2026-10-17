@@ -7,7 +7,8 @@
 //   const wavBlob = await rec.stop();         // Blob, type "audio/wav"
 //   const form = new FormData();
 //   form.append("file", wavBlob, "hum.wav");
-//   const res = await fetch("http://localhost:8000/api/search/audio", { method: "POST", body: form });
+//   // POST the form to /api/search/audio. Do not set Content-Type; the browser
+//   // must add the multipart boundary itself.
 //
 // Works in Chrome, Edge, Firefox, Safari. Requires localhost or https.
 

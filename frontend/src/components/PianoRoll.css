@@ -1,0 +1,134 @@
+.piano__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.piano__head h2 {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.piano__head p,
+.piano__legend {
+  color: var(--faint);
+  font-size: 0.88rem;
+}
+
+.piano__canvas {
+  width: 100%;
+  min-height: 312px;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #101217;
+}
+
+.piano__svg {
+  display: block;
+}
+
+.piano__board {
+  fill: #101217;
+}
+
+.piano__lane {
+  fill: rgba(244, 240, 232, 0.035);
+}
+
+.piano__grid {
+  stroke: rgba(244, 240, 232, 0.06);
+  stroke-width: 1;
+}
+
+.piano__grid--c {
+  stroke: rgba(244, 240, 232, 0.14);
+}
+
+.piano__beat {
+  stroke: rgba(244, 240, 232, 0.04);
+  stroke-width: 1;
+}
+
+.piano__axis,
+.piano__time,
+.piano__note-name {
+  font-family: var(--sans);
+}
+
+.piano__axis {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
+.piano__axis--sharp {
+  fill: var(--faint);
+}
+
+.piano__time {
+  fill: var(--faint);
+  font-size: 11px;
+}
+
+.piano__curve {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.35;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  opacity: 0.72;
+}
+
+.piano__curve--glow {
+  stroke-width: 5;
+  opacity: 0.2;
+}
+
+.piano__note {
+  fill: var(--accent);
+}
+
+.piano__note-name {
+  fill: var(--accent-ink);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.piano__legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.piano__swatch {
+  width: 16px;
+  height: 3px;
+  border-radius: 999px;
+  margin-left: 8px;
+}
+
+.piano__swatch:first-child {
+  margin-left: 0;
+}
+
+.piano__swatch--curve {
+  background: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.piano__swatch--note {
+  height: 8px;
+  background: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .piano__head {
+    flex-direction: column;
+    gap: 4px;
+  }
+}

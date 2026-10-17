@@ -1,0 +1,135 @@
+.results__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+
+.results__head h2 {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.results__head p,
+.results__empty {
+  color: var(--faint);
+  font-size: 0.88rem;
+}
+
+.results__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.result {
+  display: grid;
+  grid-template-columns: 1.6rem minmax(0, 1fr) auto;
+  column-gap: 12px;
+  row-gap: 8px;
+  align-items: center;
+  padding: 16px 2px;
+  border-bottom: 1px solid var(--line);
+}
+
+.result__rank {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85rem;
+}
+
+.result__title {
+  grid-column: 2;
+  grid-row: 1;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.result__badge {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  line-height: 1.2;
+}
+
+.result__badge--strong {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.result__badge--possible {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.result__badge--weak,
+.result__badge--none {
+  color: var(--faint);
+  border-color: var(--line);
+}
+
+.result__sub {
+  grid-column: 2 / span 2;
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.result__composer {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.result__meter {
+  flex: 0 0 96px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(244, 240, 232, 0.1);
+  overflow: hidden;
+}
+
+.result__meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--accent) 78%, white);
+}
+
+.result__score {
+  flex: 0 0 auto;
+  color: var(--faint);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 640px) {
+  .results__head {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .result__meter {
+    flex-basis: 72px;
+  }
+}

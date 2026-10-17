@@ -21,3 +21,6 @@ Thumbs.db
 
 # Large / third-party data (downloaded by scripts, not committed)
 backend/data/raw/
+
+# Local debug recordings (never commit voice data)
+backend/debug_recordings/
