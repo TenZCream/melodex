@@ -1,4 +1,5 @@
-.explore {
+.explore,
+.explore__mode {
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -12,41 +13,126 @@
   gap: 12px;
 }
 
-.describe {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.explore__label {
+  color: var(--faint);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
-.describe input {
-  flex: 1 1 auto;
-  min-width: 0;
+.describe__input {
+  width: 100%;
   background: #101217;
   color: var(--ink);
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 10px 16px;
+  padding: 12px 16px;
   font: inherit;
-  font-size: 0.92rem;
+  font-size: 0.95rem;
 }
 
-.describe input::placeholder {
+.describe__input::placeholder {
   color: var(--faint);
 }
 
-.describe button {
-  flex: 0 0 auto;
-  background: var(--accent);
-  color: var(--accent-ink);
-  border-radius: 999px;
-  padding: 10px 16px;
-  font-weight: 600;
+.explore__choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.explore__choice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-height: 112px;
+  padding: 18px 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+  text-align: left;
   cursor: pointer;
 }
 
-.describe button:disabled {
+.explore__choice:hover {
+  border-color: var(--accent);
+}
+
+.explore__choice-title {
+  color: var(--ink);
+  font-size: 1.08rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.explore__choice-sub {
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.35;
+}
+
+.explore__back {
+  align-self: flex-start;
+  padding: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+
+.explore__back:hover {
+  color: var(--ink);
+}
+
+.explore__settings {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.explore__compose {
+  width: 100%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-radius: 999px;
+  padding: 14px 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+}
+
+.explore__compose:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--accent) 86%, white);
+}
+
+.explore__compose:disabled {
   opacity: 0.5;
   cursor: default;
+}
+
+.seed-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 8px 4px 12px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.seed-chip button {
+  color: var(--faint);
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.seed-chip button:hover {
+  color: var(--ink);
 }
 
 .interpret {
@@ -218,65 +304,20 @@
   font-size: 0.78rem;
 }
 
-.explore__actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-}
-
-.explore__seed {
-  flex: 1 1 320px;
-  background: var(--accent);
-  color: var(--accent-ink);
-  border-radius: 999px;
-  padding: 14px 22px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  cursor: pointer;
-}
-
-.explore__seed:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--accent) 86%, white);
-}
-
-.explore__surprise,
-.explore__again {
-  flex: 0 0 auto;
-  border-radius: 999px;
-  cursor: pointer;
-}
-
-.explore__surprise {
-  border: 1px solid var(--line);
-  color: var(--muted);
-  padding: 8px 14px;
-  font-size: 0.88rem;
-}
-
-.explore__surprise:hover:not(:disabled) {
-  color: var(--ink);
-  border-color: color-mix(in srgb, var(--ink) 28%, var(--line));
-}
-
 .explore__again {
   align-self: flex-start;
   border: 1px solid color-mix(in srgb, var(--accent) 48%, transparent);
+  border-radius: 999px;
   color: var(--accent);
   padding: 6px 12px;
   font-size: 0.82rem;
+  cursor: pointer;
 }
 
 .explore__again:hover:not(:disabled) {
   border-color: var(--accent);
 }
 
-.describe button:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--accent) 86%, white);
-}
-
-.explore__seed:disabled,
-.explore__surprise:disabled,
 .explore__again:disabled {
   opacity: 0.5;
   cursor: default;
@@ -436,19 +477,8 @@
 }
 
 @media (max-width: 720px) {
-  .describe {
-    flex-wrap: wrap;
-  }
-
-  .describe button {
-    flex-basis: 100%;
-  }
-
+  .explore__choices,
   .explore__grid {
     grid-template-columns: 1fr;
-  }
-
-  .explore__seed {
-    flex-basis: 100%;
   }
 }

@@ -34,7 +34,7 @@ function spokenName(pitch) {
   return midiLabel(pitch).replace('#', ' sharp ')
 }
 
-export default function PianoKeyboard({ busy = false, onSearch }) {
+export default function PianoKeyboard({ busy = false, onSearch, active = true }) {
   const [notes, setNotes] = useState([])
   const [pressed, setPressed] = useState(() => new Set())
   const originRef = useRef(0)
@@ -95,13 +95,14 @@ export default function PianoKeyboard({ busy = false, onSearch }) {
       })
     }
 
+    if (!active) return undefined
     window.addEventListener('keydown', onKeyDown)
     window.addEventListener('keyup', onKeyUp)
     return () => {
       window.removeEventListener('keydown', onKeyDown)
       window.removeEventListener('keyup', onKeyUp)
     }
-  }, [])
+  }, [active])
 
   function release(pitch) {
     setPressed((current) => {

@@ -1,5 +1,11 @@
 import { Part, Synth, Volume, getDestination, getDraw, getTransport, start } from 'tone'
-import { attachInstrumentBus, ensureChords, ensureMelody, releaseInstruments } from './instruments'
+import {
+  attachInstrumentBus,
+  ensureChords,
+  ensureMelody,
+  ensureSearchPiano,
+  releaseInstruments,
+} from './instruments'
 
 const MIXER_KEY = 'melodex-mixer'
 const RAMP_SECONDS = 0.05
@@ -192,13 +198,14 @@ export async function playNote(midi) {
   voice().triggerAttackRelease(midiToFreq(midi), 0.42)
 }
 
-export async function playSequence(id, notes, onChange, chords = []) {
+export async function playSequence(id, notes, onChange, chords = [], mode = 'explore') {
   await start()
   stopPlayback()
   if (!notes?.length) return
   const gen = generation
-  const melodyReady = ensureMelody()
-  const chordsReady = chords.length ? ensureChords() : null
+  const search = mode === 'search'
+  const melodyReady = search ? ensureSearchPiano() : ensureMelody()
+  const chordsReady = !search && chords.length ? ensureChords() : null
   const melodyVoice = await melodyReady
   const chordVoice = chordsReady ? await chordsReady : null
   if (gen !== generation) return

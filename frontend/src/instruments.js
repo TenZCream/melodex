@@ -254,6 +254,10 @@ export function ensureMelody() {
   return build(melodyChoice, 'melody')
 }
 
+export function ensureSearchPiano() {
+  return build('piano', 'search')
+}
+
 export function ensureChords() {
   return build(chordChoice, 'chords')
 }

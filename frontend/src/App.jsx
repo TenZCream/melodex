@@ -34,6 +34,30 @@ async function readDetail(response) {
   return 'The search could not be completed.'
 }
 
+function SearchResults({ result, playback, onPlayQuery, onPlayResult, onExplore }) {
+  if (!result) return null
+  return (
+    <div className="search-results">
+      <VerdictBanner verdict={result.verdict} warnings={result.warnings} />
+      <PianoRoll
+        query={result.query}
+        playing={playback?.id === 'query'}
+        activeIndex={playback?.id === 'query' ? playback.index : -1}
+        onPlay={onPlayQuery}
+      />
+      <ResultsList
+        results={result.results}
+        indexSize={result.index_size}
+        playingId={playback?.id}
+        onPlay={onPlayResult}
+      />
+      <button type="button" className="from-melody" onClick={onExplore}>
+        ✨ Explore new ideas from this melody
+      </button>
+    </div>
+  )
+}
+
 export default function App() {
   const mockMode = mockModeEnabled()
   const [connection, setConnection] = useState(mockMode ? 'on' : 'pending')
@@ -43,6 +67,7 @@ export default function App() {
   const [error, setError] = useState('')
   const [mode, setMode] = useState('hum')
   const [playback, setPlayback] = useState(null)
+  const [melodySeed, setMelodySeed] = useState(null)
 
   useEffect(() => {
     if (mockMode) return undefined
@@ -128,7 +153,7 @@ export default function App() {
       start: note.start,
       duration: note.duration,
     }))
-    void playSequence('query', notes, setPlayback)
+    void playSequence('query', notes, setPlayback, [], 'search')
   }
 
   function playResult(match) {
@@ -136,15 +161,31 @@ export default function App() {
       stopPlayback()
       return
     }
-    void playSequence(match.id, segmentToSeconds(match), setPlayback)
+    void playSequence(match.id, segmentToSeconds(match), setPlayback, [], 'search')
+  }
+
+  function exploreFromMelody() {
+    const notes = (result?.query?.notes ?? []).map((note) => ({
+      pitch: note.pitch,
+      start: note.start,
+      duration: note.duration,
+    }))
+    setMelodySeed({ id: Date.now(), notes })
+    setMode('explore')
   }
 
   return (
     <div className="app">
       <Header connection={connection} indexSize={indexSize} />
       <main className="stage">
-        <div className="entry">
-          <ModeToggle mode={mode} onChange={setMode} />
+        <ModeToggle mode={mode} onChange={setMode} />
+        <div
+          className="panel"
+          id="panel-hum"
+          role="tabpanel"
+          aria-labelledby="tab-hum"
+          hidden={mode !== 'hum'}
+        >
           {mode === 'hum' ? (
             <RecordButton
               busy={searching}
@@ -152,39 +193,47 @@ export default function App() {
               onRecordStart={() => setError('')}
               onRecorded={onRecorded}
             />
-          ) : (
-            <PianoKeyboard busy={searching} onSearch={onNotes} />
-          )}
+          ) : null}
+          <ErrorBanner message={error} />
+          <SearchResults
+            result={result}
+            playback={playback}
+            onPlayQuery={playQuery}
+            onPlayResult={playResult}
+            onExplore={exploreFromMelody}
+          />
         </div>
-        <ErrorBanner message={error} />
-        {result ? (
-          <>
-            <VerdictBanner verdict={result.verdict} warnings={result.warnings} />
-            <PianoRoll
-              query={result.query}
-              playing={playback?.id === 'query'}
-              activeIndex={playback?.id === 'query' ? playback.index : -1}
-              onPlay={playQuery}
-            />
-            <ResultsList
-              results={result.results}
-              indexSize={result.index_size}
-              playingId={playback?.id}
-              onPlay={playResult}
-            />
-          </>
-        ) : null}
-        <ExplorePanel
-          key={
-            result?.query?.notes
-              ? result.query.notes.map((note) => `${note.pitch}:${note.start}:${note.duration}`).join('|')
-              : 'idle'
-          }
-          queryNotes={result ? (result.query?.notes ?? []) : null}
-          mockMode={mockMode}
-          playback={playback}
-          onPlayback={setPlayback}
-        />
+        <div
+          className="panel"
+          id="panel-keys"
+          role="tabpanel"
+          aria-labelledby="tab-keys"
+          hidden={mode !== 'keys'}
+        >
+          <PianoKeyboard busy={searching} active={mode === 'keys'} onSearch={onNotes} />
+          <ErrorBanner message={error} />
+          <SearchResults
+            result={result}
+            playback={playback}
+            onPlayQuery={playQuery}
+            onPlayResult={playResult}
+            onExplore={exploreFromMelody}
+          />
+        </div>
+        <div
+          className="panel"
+          id="panel-explore"
+          role="tabpanel"
+          aria-labelledby="tab-explore"
+          hidden={mode !== 'explore'}
+        >
+          <ExplorePanel
+            melodySeed={melodySeed}
+            mockMode={mockMode}
+            playback={playback}
+            onPlayback={setPlayback}
+          />
+        </div>
       </main>
     </div>
   )
