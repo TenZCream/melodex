@@ -18,6 +18,7 @@ from pydantic import BaseModel, Field
 
 from .catalog import load_catalog
 from .generate import Explorer, novelty_label
+from .vibes import VIBE_ORDER, VIBES
 from .melody import Note, midi_to_name
 from .pitch import AudioError, transcribe
 from .search import MIN_QUERY_NOTES, MelodyIndex, describe_key
@@ -58,6 +59,13 @@ class GenerateRequest(BaseModel):
     notes: list[NoteIn] = Field(default_factory=list, max_length=200)
     num_ideas: int = Field(default=4, ge=1, le=8)
     seed: int | None = None
+    vibe: str | None = None        # one of /api/vibes ids, or null for "surprise me"
+    key: str | None = None         # tonic name, e.g. "C", "F#", "Bb"; null = auto
+
+
+_KEY_PCS = {"C": 0, "B#": 0, "C#": 1, "DB": 1, "D": 2, "D#": 3, "EB": 3, "E": 4, "FB": 4,
+            "F": 5, "E#": 5, "F#": 6, "GB": 6, "G": 7, "G#": 8, "AB": 8, "A": 9, "A#": 10,
+            "BB": 10, "B": 11, "CB": 11}
 
 
 class NotesSearchRequest(BaseModel):
@@ -213,7 +221,18 @@ def generate(req: GenerateRequest):
     seed_notes = [Note(n.pitch, n.start, n.duration) for n in sorted(req.notes, key=lambda n: n.start)]
     if 0 < len(seed_notes) < 3:
         raise HTTPException(400, "Give at least 3 notes to build on, or none for fresh ideas.")
-    out = EXPLORER.generate(seed_notes or None, num_ideas=req.num_ideas, rng_seed=req.seed)
+    vibe = (req.vibe or "").strip().lower() or None
+    if vibe in ("surprise", "random", "any"):
+        vibe = None
+    if vibe is not None and vibe not in VIBES:
+        raise HTTPException(400, f"Unknown vibe '{req.vibe}'. Options: {', '.join(VIBE_ORDER)}.")
+    key_pc = None
+    if req.key and req.key.strip().lower() not in ("auto", ""):
+        key_pc = _KEY_PCS.get(req.key.strip().upper().replace("♯", "#").replace("♭", "B"))
+        if key_pc is None:
+            raise HTTPException(400, f"Unknown key '{req.key}'. Use a note name like C, F#, or Bb.")
+    out = EXPLORER.generate(seed_notes or None, num_ideas=req.num_ideas, rng_seed=req.seed,
+                            vibe=vibe, key_pc=key_pc)
     tempo = out["seed"]["tempo_bpm"]
     ideas = []
     for k, idea in enumerate(out["ideas"], start=1):
@@ -231,8 +250,13 @@ def generate(req: GenerateRequest):
             "title": idea.title,
             "description": idea.description,
             "follows_seed": idea.kind == "continuation",
+            "vibe": idea.vibe,
+            "vibe_label": VIBES[idea.vibe].label if idea.vibe else None,
+            "key": idea.key,
+            "form": idea.form,
+            "swing": bool(idea.vibe and VIBES[idea.vibe].swing > 0.55),
             "notes": [n.to_dict() for n in idea.notes],
-            "tempo_bpm": tempo,
+            "tempo_bpm": idea.tempo_bpm if idea.vibe and idea.kind != "continuation" else tempo,
             "novelty": {"score": idea.novelty, "label": label, "message": msg,
                         "nearest": near},
             "chords": idea.chords,
@@ -240,11 +264,18 @@ def generate(req: GenerateRequest):
     seed = out["seed"]
     return {
         "seed": {**seed, "notes": [n.to_dict() for n in seed["notes"]]},
+        "vibe": out["vibe"],
         "ideas": ideas,
         "candidates_considered": out["candidates_considered"],
         "too_familiar_dropped": out["too_familiar_dropped"],
         "index_size": len(INDEX),
     }
+
+
+@app.get("/api/vibes")
+def list_vibes():
+    return {"vibes": [VIBES[v].public() for v in VIBE_ORDER],
+            "keys": ["C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]}
 
 
 @app.get("/api/melodies")

@@ -22,8 +22,9 @@ from dataclasses import dataclass, field
 import numpy as np
 
 from .melody import MAJOR_SCALE, MINOR_SCALE, Melody, Note, estimate_key, key_name
-from .compose import BAR, best_phrases
+from .compose import BAR
 from .search import MelodyIndex
+from .vibes import VIBE_ORDER, VIBES, Chord, best_of, chord_symbol, voice_chord
 
 DEGREE_RANGE = (-7, 14)          # keep generated lines within ~3 octaves of scale steps
 NOVEL = 0.50                     # novelty >= this: "not found in index"
@@ -41,7 +42,11 @@ class Idea:
     nearest: dict | None = None
     chords: list[dict] = field(default_factory=list)
     musicality: float = 0.0
-    progression: list[int] | None = None      # chord roots per bar (scale degrees), if composed
+    progression: list | None = None            # vibes.Chord list, if composed
+    vibe: str | None = None
+    tempo_bpm: float = 100.0
+    form: str | None = None
+    key: str = ""
 
 
 # ------------------------------------------------------------------ scale helpers
@@ -307,58 +312,99 @@ class Explorer:
         return round(1.0 - h.score, 3), nearest
 
     def generate(self, seed_notes: list[Note] | None, num_ideas: int = 4,
-                 rng_seed: int | None = None) -> dict:
+                 rng_seed: int | None = None, vibe: str | None = None,
+                 key_pc: int | None = None) -> dict:
+        """vibe: one of VIBES (or None). key_pc: tonic pitch class 0-11 (or None = auto)."""
         rng = np.random.default_rng(rng_seed)
         has_seed = bool(seed_notes) and len(seed_notes) >= 3
+        if vibe is not None and vibe not in VIBES:
+            raise ValueError(f"unknown vibe '{vibe}'")
 
         if has_seed:
             seed_beats, beat_sec = seed_to_beats(seed_notes)
             sc = _scale_for([n.pitch for n in seed_beats], [n.duration for n in seed_beats])
             seed_deg = [sc.to_degree(n.pitch) for n in seed_beats]
             seed_dur = [n.duration for n in seed_beats]
+            seed_tempo = float(np.clip(round(60.0 / max(beat_sec, 0.2)), 60, 160))
         else:
             sc = Scale(0, "major", 60)
             seed_deg, seed_dur = [], []
-            seed_beats, beat_sec = [], 0.5
+            seed_beats, seed_tempo = [], 100.0
 
+        tonic_pc = key_pc if key_pc is not None else (sc.tonic_pc if has_seed else 0)
+        if has_seed:
+            # keep ideas in the user's register: tonic at or just below their median note
+            med = int(np.median([n.pitch for n in seed_beats]))
+            orig_tonic_midi = med - ((med - sc.tonic_pc) % 12)
+            shift = ((tonic_pc - sc.tonic_pc + 6) % 12) - 6      # smallest move to the new key
+            tonic_midi = orig_tonic_midi + shift
+            if shift:
+                seed_beats = [Note(n.pitch + shift, n.start, n.duration) for n in seed_beats]
+            sc = Scale(tonic_pc, sc.mode, tonic_midi)
+        else:
+            tonic_midi = 60 + ((tonic_pc - 60) % 12)       # tonic in C4..B4
+            if tonic_midi > 65:
+                tonic_midi -= 12                           # keep melodies comfortably mid-range
+
+        default_vibe = vibe or ("sad" if sc.mode == "minor" else "pop")
         candidates: list[Idea] = []
 
-        def add(kind, title, desc, degs, durs, mus=0.0, prog=None):
-            notes = _from_degrees(sc, degs, durs)
-            if len(notes) < 4 or len({n.pitch for n in notes}) < 3:
+        def add(idea: Idea):
+            n = idea.notes
+            if len(n) < 4 or len({x.pitch for x in n}) < 3:
                 return
-            if any(_same_pitches(notes, c.notes) for c in candidates):
+            if any(_same_pitches(n, c.notes) for c in candidates):
                 return
-            novelty, nearest = self._novelty(notes)
-            candidates.append(Idea(kind, title, desc, notes, novelty, nearest,
-                                   musicality=mus, progression=prog))
+            idea.novelty, idea.nearest = self._novelty(n)
+            candidates.append(idea)
 
-        key_txt = key_name(sc.tonic_pc, sc.mode)
+        def composed(v, kind, title, desc, start=None, motif=None, keep=3, tempo=None):
+            for mus, ev, prog, form, _f in best_of(v, rng, n=30, keep=keep, start=start, motif=motif):
+                notes = [Note(tonic_midi + e.pitch, round(e.start, 3), round(e.dur, 3))
+                         for e in ev if e.pitch is not None]
+                t = tempo or float(rng.integers(v.tempo[0], v.tempo[1] + 1))
+                add(Idea(kind, title, desc, notes, musicality=mus, progression=prog,
+                         vibe=v.id, tempo_bpm=t, form=form,
+                         key=f"{_KEY_NAMES[tonic_pc]} {v.mode_label}"))
+
         if has_seed:
-            for mus, d, r, prog in gen_composed_continuation(seed_deg, seed_dur, sc, rng):
-                add("continuation", "Continuation",
-                    "An answer to your phrase: reuses your rhythm, follows a real chord "
-                    "progression, and resolves home.", d, r, mus, prog)
+            v = VIBES[default_vibe]
+            last = seed_beats[-1].pitch - tonic_midi
+            composed(v, "continuation", "Continuation",
+                     f"{v.label} answer to your phrase: picks up where you stopped and reuses "
+                     "your rhythm.", start=int(np.clip(last, v.center - 10, v.center + 10)),
+                     motif=_seed_motif_rhythm(seed_dur), keep=3, tempo=seed_tempo)
+            composed(v, "fresh", f"{v.label} idea", v.description, keep=3)
             d, r = gen_inversion(seed_deg, seed_dur)
-            add("inversion", "Mirror", "Your phrase turned upside-down: every rise becomes a fall.", d, r)
-            for _ in range(4):
+            add(Idea("inversion", "Mirror", "Your phrase turned upside-down: every rise becomes a fall.",
+                     _from_degrees(sc, d, r), tempo_bpm=seed_tempo, key=key_name(tonic_pc, sc.mode)))
+            for _ in range(3):
                 d, r = gen_sequence(seed_deg, seed_dur, rng)
-                add("sequence", "Sequence", "Your opening motif, restated on a new step of the scale.", d, r)
-            d, r = gen_rhythm_flip(seed_deg, seed_dur)
-            add("rhythm", "Rhythm flip", "Same notes, with long and short swapped.", d, r)
-        for mus, d, r, prog in gen_composed_fresh(sc, rng):
-            add("fresh", "Fresh idea",
-                f"A new 4-bar phrase in {key_txt} over a {_prog_name(prog, sc.mode)} progression.",
-                d, r, mus, prog)
+                add(Idea("sequence", "Sequence", "Your opening motif, restated on a new step of the scale.",
+                         _from_degrees(sc, d, r), tempo_bpm=seed_tempo, key=key_name(tonic_pc, sc.mode)))
+            order = ["continuation", "fresh", "inversion", "sequence", "fresh", "continuation"]
+        elif vibe:
+            v = VIBES[vibe]
+            composed(v, "fresh", f"{v.label} idea", v.description, keep=6)
+            order = ["fresh"] * 8
+        else:
+            # Surprise me: a different vibe on every card
+            picks = list(rng.permutation(VIBE_ORDER))
+            for vid in picks[:max(num_ideas + 1, 5)]:
+                v = VIBES[vid]
+                composed(v, "fresh", f"{v.label} idea", v.description, keep=1)
+            order = ["fresh"] * 8
 
         kept = [c for c in candidates if c.novelty >= FAMILIAR]
         dropped = len(candidates) - len(kept)
-        # rank: composed ideas by musicality, then novelty; one of each kind first
         kept.sort(key=lambda c: (-(c.musicality or 0.0), -c.novelty))
         chosen: list[Idea] = []
-        for k in ["continuation", "fresh", "inversion", "sequence", "rhythm"]:
+        for k in order:
+            if len(chosen) >= num_ideas:
+                break
             for c in kept:
-                if c.kind == k and c not in chosen:
+                if c.kind == k and c not in chosen and \
+                        (k != "fresh" or vibe or has_seed or c.vibe not in {x.vibe for x in chosen}):
                     chosen.append(c)
                     break
         for c in kept:
@@ -367,19 +413,25 @@ class Explorer:
             if c not in chosen:
                 chosen.append(c)
         chosen = chosen[:num_ideas]
-        for c in chosen:
-            c.chords = chords_from_progression(c.progression, sc, c.notes) if c.progression \
-                else suggest_chords(c.notes, sc)
 
-        tempo = float(np.clip(round(60.0 / max(beat_sec, 0.2)), 60, 160))
+        for c in chosen:
+            low = min(n.pitch for n in c.notes)
+            if c.progression:
+                minor = VIBES[c.vibe].mode_label.startswith("minor") if c.vibe else sc.mode == "minor"
+                c.chords = chords_for(c.progression, tonic_pc, tonic_midi, low, c.notes, minor)
+            else:
+                c.chords = triad_chords(suggest_chords(c.notes, sc), tonic_midi, low)
+
         return {
-            "seed": {"used": has_seed, "key": key_name(sc.tonic_pc, sc.mode),
-                     "num_notes": len(seed_notes or []), "tempo_bpm": tempo,
+            "seed": {"used": has_seed, "key": key_name(tonic_pc, sc.mode),
+                     "num_notes": len(seed_notes or []), "tempo_bpm": seed_tempo,
                      "notes": seed_beats},
+            "vibe": vibe,
             "ideas": chosen,
             "candidates_considered": len(candidates),
             "too_familiar_dropped": dropped,
         }
+
 
 
 _ROMAN_MAJOR = ["I", "ii", "iii", "IV", "V", "vi", "vii°"]
@@ -412,6 +464,49 @@ def chords_from_progression(prog, sc: Scale, notes: list[Note]) -> list[dict]:
             quality = ""
         out.append({"start": start, "duration": min(BAR, end - start), "roman": roman,
                     "symbol": f"{_NAMES[pc]}{quality}"})
+    return out
+
+
+def chords_for(prog: list, tonic_pc: int, tonic_midi: int, melody_low: int,
+               notes: list[Note], minor: bool = False) -> list[dict]:
+    """Chord list for a composed idea, with exact voicings for playback."""
+    end = notes[-1].start + notes[-1].duration if notes else 16.0
+    out, t = [], 0.0
+    for ch in prog:
+        if t >= end - 1e-6:
+            break
+        tones, bass = voice_chord(tonic_midi, ch, melody_low)
+        out.append({"start": round(t, 3), "duration": round(min(ch.beats, end - t), 3),
+                    "roman": ch.roman, "symbol": chord_symbol(tonic_pc, ch, minor),
+                    "root_pc": (tonic_pc + ch.root) % 12, "quality": ch.quality,
+                    "suffix": _suffix(ch.quality), "tones": tones, "bass": bass})
+        t += ch.beats
+    return out
+
+
+def _suffix(q):
+    from .vibes import QUALITY_SUFFIX
+    return QUALITY_SUFFIX[q]
+
+
+_KEY_NAMES = ["C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
+_SYMBOL_PC = {n: i for i, n in enumerate(["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"])}
+
+
+def triad_chords(chords: list[dict], tonic_midi: int, melody_low: int) -> list[dict]:
+    """Add exact voicings to simple triad chords (from suggest_chords)."""
+    tonic_pc = tonic_midi % 12
+    out = []
+    for c in chords:
+        sym = c["symbol"]
+        name = sym[:2] if len(sym) > 1 and sym[1] in "b#" else sym[:1]
+        qual = sym[len(name):]
+        root_pc = _SYMBOL_PC.get(name, 0)
+        quality = {"": "maj", "m": "min", "dim": "dim"}.get(qual, "maj")
+        ch = Chord((root_pc - tonic_pc) % 12, quality, c["roman"], c["duration"])
+        tones, bass = voice_chord(tonic_midi, ch, melody_low)
+        out.append({**c, "root_pc": root_pc, "quality": quality, "suffix": _suffix(quality),
+                    "tones": tones, "bass": bass})
     return out
 
 

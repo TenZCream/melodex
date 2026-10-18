@@ -240,3 +240,28 @@ Musicality score (same heuristic): real indexed tunes avg 0.75, old Markov ideas
 composer best picks ~0.98. (The heuristic rewards "textbook" writing; it's a guide, not
 a judge of taste.) Chords returned per bar from the progression. API shape unchanged.
 All tests pass; 9/9 real recordings still correct.
+
+### Checkpoint 7 — vibes (Sat ~7:50 PM PT)
+
+Lexing: melodies need *different vibes* — sad, happy, mysterious, dissonant, jazzy,
+swingy, pop — and the melody matters most (that's what judges hear). Hook + syncopation
+stay; a climax note is optional, not mandatory.
+
+**Built `backend/app/vibes.py`** (melody-first composer, semitone-based so blue notes,
+chromatic approaches and tritones are possible). Each vibe sets: scale/mode, interval
+preferences, direction, rhythm cells (incl. rests), phrase forms (AABA, ABAC, AAAB…),
+ornaments (sad sighs, jazz chromatic approaches, blues blue notes), chance of a climax,
+chance of resolving home vs. an open ending, register, tempo range, swing, and chord
+progressions (7ths/9ths for jazz, dom7 for blues, dim/aug/7b9 for dissonant).
+Hooks repeat as A' = same rhythm + shape re-fitted to the new chord, with the tail varied.
+30 candidates per idea, scored against the vibe's own target profile.
+
+**API:** `GET /api/vibes`; `/api/generate` takes `vibe` and `key`; ideas carry `vibe`,
+`key`, `form`, `swing`, their own `tempo_bpm`, and chords with exact `tones` + `bass`.
+"Surprise me" gives each card a different vibe.
+
+**Tests** (`tests/test_generate.py`): every vibe ± seed, key change moves seed + ideas,
+chords audible (≥ C3), surprise mixes ≥ 3 vibes, ideas never ≥ 70% similar to a known
+tune, and a "vibes sound different" test (sad falls / happy rises, jazz busiest,
+mysterious has rests, dissonant tritones, swingy blue notes, pop hook ≥ 0.8…).
+Search suites and 9/9 real recordings unchanged.

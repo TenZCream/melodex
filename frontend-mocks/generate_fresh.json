@@ -3,343 +3,262 @@
   "used": false,
   "key": "C major",
   "num_notes": 0,
-  "tempo_bpm": 120.0,
+  "tempo_bpm": 100.0,
   "notes": []
  },
+ "vibe": null,
  "ideas": [
   {
    "id": "idea-1",
    "kind": "fresh",
-   "title": "Fresh idea",
-   "description": "A new phrase in C major.",
+   "title": "Dissonant idea",
+   "description": "Tense and unsettled: tritones, chromatic clashes, jagged leaps, no easy resolution.",
    "follows_seed": false,
+   "vibe": "dissonant",
+   "vibe_label": "Dissonant",
+   "key": "C (chromatic)",
+   "form": "ABCD",
+   "swing": false,
    "notes": [
     {
-     "pitch": 60,
-     "name": "C4",
+     "pitch": 75,
+     "name": "D#5",
      "start": 0.0,
-     "duration": 1.0
-    },
-    {
-     "pitch": 59,
-     "name": "B3",
-     "start": 1.0,
-     "duration": 1.0
-    },
-    {
-     "pitch": 53,
-     "name": "F3",
-     "start": 2.0,
      "duration": 1.5
     },
     {
-     "pitch": 53,
-     "name": "F3",
-     "start": 3.5,
-     "duration": 0.5
+     "pitch": 72,
+     "name": "C5",
+     "start": 1.5,
+     "duration": 1.5
     },
     {
-     "pitch": 65,
-     "name": "F4",
+     "pitch": 66,
+     "name": "F#4",
+     "start": 3.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 63,
+     "name": "D#4",
      "start": 4.0,
      "duration": 0.5
     },
     {
-     "pitch": 62,
-     "name": "D4",
+     "pitch": 67,
+     "name": "G4",
      "start": 4.5,
+     "duration": 1.5
+    },
+    {
+     "pitch": 73,
+     "name": "C#5",
+     "start": 6.0,
      "duration": 0.5
     },
     {
-     "pitch": 59,
-     "name": "B3",
-     "start": 5.0,
+     "pitch": 71,
+     "name": "B4",
+     "start": 6.5,
+     "duration": 1.5
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 8.0,
+     "duration": 0.75
+    },
+    {
+     "pitch": 66,
+     "name": "F#4",
+     "start": 8.75,
+     "duration": 0.75
+    },
+    {
+     "pitch": 75,
+     "name": "D#5",
+     "start": 9.5,
      "duration": 0.5
     },
     {
-     "pitch": 60,
-     "name": "C4",
-     "start": 5.5,
+     "pitch": 76,
+     "name": "E5",
+     "start": 10.0,
      "duration": 2.0
+    },
+    {
+     "pitch": 75,
+     "name": "D#5",
+     "start": 12.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 13.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 70,
+     "name": "A#4",
+     "start": 13.5,
+     "duration": 1.5
+    },
+    {
+     "pitch": 70,
+     "name": "A#4",
+     "start": 15.0,
+     "duration": 1.5
     }
    ],
-   "tempo_bpm": 120.0,
+   "tempo_bpm": 93.0,
    "novelty": {
-    "score": 0.81,
+    "score": 0.962,
     "label": "novel",
-    "message": "Not found among our 30 indexed melodies. Closest: \u201cRow, Row, Row Your Boat\u201d (19% similar).",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cWhen the Saints Go Marching In\u201d (4% similar).",
     "nearest": {
-     "id": "famous-010",
-     "title": "Row, Row, Row Your Boat",
-     "composer": "Traditional",
-     "similarity": 0.19
+     "id": "famous-012",
+     "title": "When the Saints Go Marching In",
+     "composer": "Traditional (spiritual)",
+     "similarity": 0.038
     }
    },
    "chords": [
     {
      "start": 0.0,
-     "duration": 2.0,
-     "roman": "I",
-     "symbol": "C"
-    },
-    {
-     "start": 2.0,
-     "duration": 2.0,
-     "roman": "IV",
-     "symbol": "F"
+     "duration": 4.0,
+     "roman": "i",
+     "symbol": "Cm",
+     "root_pc": 0,
+     "quality": "min",
+     "suffix": "m",
+     "tones": [
+      48,
+      51,
+      55
+     ],
+     "bass": 36
     },
     {
      "start": 4.0,
-     "duration": 2.0,
-     "roman": "V",
-     "symbol": "G"
+     "duration": 4.0,
+     "roman": "#IVdim7",
+     "symbol": "Gbdim7",
+     "root_pc": 6,
+     "quality": "dim7",
+     "suffix": "dim7",
+     "tones": [
+      54,
+      57,
+      60,
+      63
+     ],
+     "bass": 42
     },
     {
-     "start": 6.0,
-     "duration": 2.0,
-     "roman": "I",
-     "symbol": "C"
+     "start": 8.0,
+     "duration": 4.0,
+     "roman": "bII",
+     "symbol": "Db",
+     "root_pc": 1,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      49,
+      53,
+      56
+     ],
+     "bass": 37
+    },
+    {
+     "start": 12.0,
+     "duration": 4.0,
+     "roman": "i(maj7)",
+     "symbol": "Cm(maj7)",
+     "root_pc": 0,
+     "quality": "m(maj7)",
+     "suffix": "m(maj7)",
+     "tones": [
+      48,
+      51,
+      55,
+      59
+     ],
+     "bass": 36
     }
    ]
   },
   {
    "id": "idea-2",
    "kind": "fresh",
-   "title": "Fresh idea",
-   "description": "A new phrase in C major.",
+   "title": "Happy idea",
+   "description": "Bright and bouncy: upward leaps, a hook that comes back, a firm ending.",
    "follows_seed": false,
+   "vibe": "happy",
+   "vibe_label": "Happy",
+   "key": "C major",
+   "form": "ABAB",
+   "swing": false,
    "notes": [
     {
-     "pitch": 60,
-     "name": "C4",
+     "pitch": 69,
+     "name": "A4",
      "start": 0.0,
      "duration": 1.0
     },
     {
-     "pitch": 62,
-     "name": "D4",
+     "pitch": 69,
+     "name": "A4",
      "start": 1.0,
-     "duration": 1.0
+     "duration": 0.5
     },
     {
-     "pitch": 59,
-     "name": "B3",
+     "pitch": 71,
+     "name": "B4",
+     "start": 1.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 69,
+     "name": "A4",
      "start": 2.0,
      "duration": 1.0
     },
     {
-     "pitch": 60,
-     "name": "C4",
+     "pitch": 71,
+     "name": "B4",
      "start": 3.0,
-     "duration": 2.0
+     "duration": 1.0
     },
     {
-     "pitch": 62,
-     "name": "D4",
+     "pitch": 74,
+     "name": "D5",
+     "start": 4.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 72,
+     "name": "C5",
+     "start": 4.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 74,
+     "name": "D5",
      "start": 5.0,
-     "duration": 0.5
-    },
-    {
-     "pitch": 59,
-     "name": "B3",
-     "start": 5.5,
-     "duration": 0.5
-    },
-    {
-     "pitch": 55,
-     "name": "G3",
-     "start": 6.0,
-     "duration": 0.5
-    },
-    {
-     "pitch": 48,
-     "name": "C3",
-     "start": 6.5,
-     "duration": 2.0
-    }
-   ],
-   "tempo_bpm": 120.0,
-   "novelty": {
-    "score": 0.81,
-    "label": "novel",
-    "message": "Not found among our 30 indexed melodies. Closest: \u201cYankee Doodle\u201d (19% similar).",
-    "nearest": {
-     "id": "famous-029",
-     "title": "Yankee Doodle",
-     "composer": "Traditional (American)",
-     "similarity": 0.19
-    }
-   },
-   "chords": [
-    {
-     "start": 0.0,
-     "duration": 2.0,
-     "roman": "I",
-     "symbol": "C"
-    },
-    {
-     "start": 2.0,
-     "duration": 2.0,
-     "roman": "V",
-     "symbol": "G"
-    },
-    {
-     "start": 4.0,
-     "duration": 2.0,
-     "roman": "I",
-     "symbol": "C"
-    },
-    {
-     "start": 6.0,
-     "duration": 2.0,
-     "roman": "I",
-     "symbol": "C"
-    },
-    {
-     "start": 8.0,
-     "duration": 2.0,
-     "roman": "I",
-     "symbol": "C"
-    }
-   ]
-  },
-  {
-   "id": "idea-3",
-   "kind": "fresh",
-   "title": "Fresh idea",
-   "description": "A new phrase in C major.",
-   "follows_seed": false,
-   "notes": [
-    {
-     "pitch": 60,
-     "name": "C4",
-     "start": 0.0,
      "duration": 1.0
-    },
-    {
-     "pitch": 59,
-     "name": "B3",
-     "start": 1.0,
-     "duration": 1.0
-    },
-    {
-     "pitch": 64,
-     "name": "E4",
-     "start": 2.0,
-     "duration": 1.0
-    },
-    {
-     "pitch": 62,
-     "name": "D4",
-     "start": 3.0,
-     "duration": 1.0
-    },
-    {
-     "pitch": 59,
-     "name": "B3",
-     "start": 4.0,
-     "duration": 1.5
-    },
-    {
-     "pitch": 69,
-     "name": "A4",
-     "start": 5.5,
-     "duration": 0.5
-    },
-    {
-     "pitch": 69,
-     "name": "A4",
-     "start": 6.0,
-     "duration": 0.5
-    },
-    {
-     "pitch": 60,
-     "name": "C4",
-     "start": 6.5,
-     "duration": 2.0
-    }
-   ],
-   "tempo_bpm": 120.0,
-   "novelty": {
-    "score": 0.784,
-    "label": "novel",
-    "message": "Not found among our 30 indexed melodies. Closest: \u201cOde to Joy (Symphony No. 9)\u201d (22% similar).",
-    "nearest": {
-     "id": "famous-002",
-     "title": "Ode to Joy (Symphony No. 9)",
-     "composer": "Ludwig van Beethoven",
-     "similarity": 0.216
-    }
-   },
-   "chords": [
-    {
-     "start": 0.0,
-     "duration": 2.0,
-     "roman": "I",
-     "symbol": "C"
-    },
-    {
-     "start": 2.0,
-     "duration": 2.0,
-     "roman": "V",
-     "symbol": "G"
-    },
-    {
-     "start": 4.0,
-     "duration": 2.0,
-     "roman": "V",
-     "symbol": "G"
-    },
-    {
-     "start": 6.0,
-     "duration": 2.0,
-     "roman": "IV",
-     "symbol": "F"
-    },
-    {
-     "start": 8.0,
-     "duration": 2.0,
-     "roman": "I",
-     "symbol": "C"
-    }
-   ]
-  },
-  {
-   "id": "idea-4",
-   "kind": "fresh",
-   "title": "Fresh idea",
-   "description": "A new phrase in C major.",
-   "follows_seed": false,
-   "notes": [
-    {
-     "pitch": 60,
-     "name": "C4",
-     "start": 0.0,
-     "duration": 1.0
-    },
-    {
-     "pitch": 67,
-     "name": "G4",
-     "start": 1.0,
-     "duration": 1.0
-    },
-    {
-     "pitch": 67,
-     "name": "G4",
-     "start": 2.0,
-     "duration": 2.0
-    },
-    {
-     "pitch": 69,
-     "name": "A4",
-     "start": 4.0,
-     "duration": 2.0
     },
     {
      "pitch": 71,
      "name": "B4",
      "start": 6.0,
-     "duration": 1.0
+     "duration": 0.5
+    },
+    {
+     "pitch": 72,
+     "name": "C5",
+     "start": 6.5,
+     "duration": 0.5
     },
     {
      "pitch": 65,
@@ -348,71 +267,517 @@
      "duration": 1.0
     },
     {
-     "pitch": 67,
-     "name": "G4",
+     "pitch": 64,
+     "name": "E4",
      "start": 8.0,
      "duration": 1.0
     },
     {
-     "pitch": 72,
-     "name": "C5",
+     "pitch": 64,
+     "name": "E4",
      "start": 9.0,
-     "duration": 2.0
+     "duration": 0.5
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 9.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 10.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 11.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 12.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 12.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 13.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 14.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 14.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 15.0,
+     "duration": 1.5
     }
    ],
-   "tempo_bpm": 120.0,
+   "tempo_bpm": 124.0,
    "novelty": {
-    "score": 0.741,
+    "score": 0.793,
     "label": "novel",
-    "message": "Not found among our 30 indexed melodies. Closest: \u201cIn the Hall of the Mountain King\u201d (26% similar).",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cMinuet in G\u201d (21% similar).",
     "nearest": {
-     "id": "famous-019",
-     "title": "In the Hall of the Mountain King",
-     "composer": "Edvard Grieg",
-     "similarity": 0.259
+     "id": "famous-018",
+     "title": "Minuet in G",
+     "composer": "Christian Petzold (attr. J. S. Bach)",
+     "similarity": 0.207
     }
    },
    "chords": [
     {
      "start": 0.0,
-     "duration": 2.0,
-     "roman": "I",
-     "symbol": "C"
-    },
-    {
-     "start": 2.0,
-     "duration": 2.0,
-     "roman": "V",
-     "symbol": "G"
+     "duration": 4.0,
+     "roman": "IV",
+     "symbol": "F",
+     "root_pc": 5,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      53,
+      57,
+      60
+     ],
+     "bass": 41
     },
     {
      "start": 4.0,
-     "duration": 2.0,
-     "roman": "IV",
-     "symbol": "F"
-    },
-    {
-     "start": 6.0,
-     "duration": 2.0,
+     "duration": 4.0,
      "roman": "V",
-     "symbol": "G"
+     "symbol": "G",
+     "root_pc": 7,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      55,
+      59,
+      62
+     ],
+     "bass": 43
     },
     {
      "start": 8.0,
-     "duration": 2.0,
+     "duration": 4.0,
      "roman": "I",
-     "symbol": "C"
+     "symbol": "C",
+     "root_pc": 0,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      48,
+      52,
+      55
+     ],
+     "bass": 36
     },
     {
-     "start": 10.0,
-     "duration": 2.0,
+     "start": 12.0,
+     "duration": 4.0,
      "roman": "I",
-     "symbol": "C"
+     "symbol": "C",
+     "root_pc": 0,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      48,
+      52,
+      55
+     ],
+     "bass": 36
+    }
+   ]
+  },
+  {
+   "id": "idea-3",
+   "kind": "fresh",
+   "title": "Pop idea",
+   "description": "Catchy and singable: one short syncopated hook, repeated with small changes.",
+   "follows_seed": false,
+   "vibe": "pop",
+   "vibe_label": "Pop",
+   "key": "C major",
+   "form": "AAAB",
+   "swing": false,
+   "notes": [
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 0.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 1.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 1.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 2.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 2.5,
+     "duration": 1.5
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 4.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 5.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 5.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 59,
+     "name": "B3",
+     "start": 6.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 59,
+     "name": "B3",
+     "start": 6.5,
+     "duration": 1.5
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 8.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 9.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 9.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 10.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 10.5,
+     "duration": 1.5
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 12.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 13.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 13.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 14.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 14.5,
+     "duration": 1.5
+    }
+   ],
+   "tempo_bpm": 116.0,
+   "novelty": {
+    "score": 0.79,
+    "label": "novel",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cOde to Joy (Symphony No. 9)\u201d (21% similar).",
+    "nearest": {
+     "id": "famous-002",
+     "title": "Ode to Joy (Symphony No. 9)",
+     "composer": "Ludwig van Beethoven",
+     "similarity": 0.21
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 4.0,
+     "roman": "I",
+     "symbol": "C",
+     "root_pc": 0,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      48,
+      52,
+      55
+     ],
+     "bass": 36
+    },
+    {
+     "start": 4.0,
+     "duration": 4.0,
+     "roman": "V",
+     "symbol": "G",
+     "root_pc": 7,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      55,
+      59,
+      62
+     ],
+     "bass": 43
+    },
+    {
+     "start": 8.0,
+     "duration": 4.0,
+     "roman": "vi",
+     "symbol": "Am",
+     "root_pc": 9,
+     "quality": "min",
+     "suffix": "m",
+     "tones": [
+      57,
+      60,
+      64
+     ],
+     "bass": 45
+    },
+    {
+     "start": 12.0,
+     "duration": 4.0,
+     "roman": "IV",
+     "symbol": "F",
+     "root_pc": 5,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      53,
+      57,
+      60
+     ],
+     "bass": 41
+    }
+   ]
+  },
+  {
+   "id": "idea-4",
+   "kind": "fresh",
+   "title": "Sad idea",
+   "description": "Slow and falling: long notes, sighing figures, minor color; may not fully resolve.",
+   "follows_seed": false,
+   "vibe": "sad",
+   "vibe_label": "Sad",
+   "key": "C minor",
+   "form": "AABA",
+   "swing": false,
+   "notes": [
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 0.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 1.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 2.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 4.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 5.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 56,
+     "name": "G#3",
+     "start": 6.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 63,
+     "name": "D#4",
+     "start": 8.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 9.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 11.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 12.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 13.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 14.0,
+     "duration": 2.0
+    }
+   ],
+   "tempo_bpm": 73.0,
+   "novelty": {
+    "score": 0.686,
+    "label": "novel",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cLondon Bridge Is Falling Down\u201d (31% similar).",
+    "nearest": {
+     "id": "famous-011",
+     "title": "London Bridge Is Falling Down",
+     "composer": "Traditional",
+     "similarity": 0.314
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 4.0,
+     "roman": "i",
+     "symbol": "Cm",
+     "root_pc": 0,
+     "quality": "min",
+     "suffix": "m",
+     "tones": [
+      48,
+      51,
+      55
+     ],
+     "bass": 36
+    },
+    {
+     "start": 4.0,
+     "duration": 4.0,
+     "roman": "VI",
+     "symbol": "Ab",
+     "root_pc": 8,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      56,
+      60,
+      63
+     ],
+     "bass": 44
+    },
+    {
+     "start": 8.0,
+     "duration": 4.0,
+     "roman": "III",
+     "symbol": "Eb",
+     "root_pc": 3,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      51,
+      55,
+      58
+     ],
+     "bass": 39
+    },
+    {
+     "start": 12.0,
+     "duration": 4.0,
+     "roman": "VII",
+     "symbol": "Bb",
+     "root_pc": 10,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      58,
+      62,
+      65
+     ],
+     "bass": 46
     }
    ]
   }
  ],
- "candidates_considered": 40,
- "too_familiar_dropped": 6,
+ "candidates_considered": 5,
+ "too_familiar_dropped": 0,
  "index_size": 30
 }

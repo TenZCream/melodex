@@ -125,68 +125,93 @@ Errors:
 
 ---
 
+## GET /api/vibes
+The vibe list for a picker, plus the keys for a key selector. Mock: `frontend-mocks/vibes.json`.
+```json
+{
+  "vibes": [
+    { "id": "happy", "label": "Happy", "description": "Bright and bouncy: ...",
+      "tempo": [112, 132], "swing": false, "mode": "major" },
+    ...  // happy, sad, pop, mysterious, dissonant, jazzy, swingy
+  ],
+  "keys": ["C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
+}
+```
+
 ## POST /api/generate  (Explore)
 Generate new melodic ideas, each checked against the index. Mocks:
-`frontend-mocks/generate_from_hum.json`, `frontend-mocks/generate_fresh.json`.
+`generate_from_hum.json` (from a hum, no vibe), `generate_fresh.json` ("Surprise me"),
+`generate_jazzy.json` (vibe = jazzy).
 
-Request:
+Request (all fields optional):
 ```json
 {
   "notes": [ { "pitch": 58, "start": 0.3, "duration": 0.5 }, ... ],
+  "vibe": "jazzy",
+  "key": "D",
   "num_ideas": 4,
   "seed": null
 }
 ```
-- `notes`: optional. Pass the user's phrase (e.g. `query.notes` from a search response,
-  in seconds) to build on it. Omit or send `[]` for fresh ideas in C major.
-  1–2 notes → 400. At least 3 notes to build on.
-- `num_ideas`: optional, 1–8, default 4.
-- `seed`: optional integer for repeatable results. Omit it to get new ideas every call
-  (use that for a "Generate again" button).
+- `notes`: the user's phrase (e.g. `query.notes` from a search, in seconds) to build on.
+  Omit or `[]` for fresh ideas. 1–2 notes → 400.
+- `vibe`: an id from `/api/vibes`. Omit / `null` / `"surprise"` = **Surprise me**: without
+  notes, every card gets a **different** vibe; with notes, the vibe is inferred
+  (major → pop, minor → sad).
+- `key`: tonic name (`"C"`, `"F#"`, `"Bb"` …). Omit / `"auto"` = the hum's key, or C.
+  With notes, the user's phrase is moved to the new key too (`seed.notes` already is).
+- `seed`: integer for repeatable results; omit it for new ideas every call.
+- Errors: unknown vibe or key → 400 with a helpful `detail`.
 
 Response:
 ```json
 {
-  "seed": {
-    "used": true, "key": "Bb major", "num_notes": 14, "tempo_bpm": 109,
-    "notes": [ Note, ... ]
-  },
+  "seed": { "used": true, "key": "Bb major", "num_notes": 14, "tempo_bpm": 109,
+            "notes": [ Note, ... ] },
+  "vibe": "jazzy",
   "ideas": [
     {
       "id": "idea-1",
       "kind": "continuation",
       "title": "Continuation",
-      "description": "What could come next: picks up where you stopped and brings it home.",
+      "description": "Jazzy answer to your phrase: ...",
       "follows_seed": true,
+      "vibe": "jazzy",
+      "vibe_label": "Jazzy",
+      "key": "Bb major",
+      "form": "AABA",
+      "swing": true,
       "notes": [ Note, ... ],
       "tempo_bpm": 109,
-      "novelty": {
-        "score": 0.89,
-        "label": "novel",
-        "message": "Not found among our 30 indexed melodies. Closest: “Jingle Bells” (11% similar).",
-        "nearest": { "id": "famous-005", "title": "Jingle Bells", "composer": "...", "similarity": 0.11 }
-      },
-      "chords": [ { "start": 0.0, "duration": 2.0, "roman": "I", "symbol": "Bb" }, ... ]
+      "novelty": { "score": 0.89, "label": "novel", "message": "...", "nearest": { ... } },
+      "chords": [
+        { "start": 0.0, "duration": 4.0, "roman": "ii7", "symbol": "Dm7",
+          "root_pc": 2, "quality": "m7", "suffix": "m7",
+          "tones": [50, 53, 57, 60], "bass": 38 }
+      ]
     }
   ],
-  "candidates_considered": 37,
-  "too_familiar_dropped": 7,
+  "candidates_considered": 9,
+  "too_familiar_dropped": 2,
   "index_size": 30
 }
 ```
-- All `notes`, `chords[].start` and `chords[].duration` here are in **beats**.
-  Play with `seconds = beats * 60 / tempo_bpm`. `seed.notes` is the user's phrase
-  converted to beats at the same tempo.
-- `kind`: `continuation` | `inversion` (shown as "Mirror") | `sequence` | `rhythm`
-  (shown as "Rhythm flip") | `fresh`.
-- `follows_seed: true` means the idea is meant to be heard **right after** the user's
-  phrase: play `seed.notes`, then the idea's notes.
-- `novelty.label`: `novel` (score ≥ 0.5) or `echoes` (0.3–0.5). Ideas below 0.3
-  (too close to a known melody) are never returned; `too_familiar_dropped` counts them.
-- Novelty is always relative to the index. Say "not found in our index", never
-  "original".
-- Chords: one diatonic triad per 2 beats, ending on the home chord. Play them softly
-  under the melody (e.g. a pad playing the triad), or show them as labels above the notes.
+- **Each idea has its own `tempo_bpm`** (vibes have different tempos). Notes and chord
+  `start`/`duration` are in **beats**: `seconds = beats * 60 / tempo_bpm`.
+- **Swing is already applied** in the note timings (offbeat 8ths are delayed). `swing: true`
+  is just for display (e.g. a "swing" tag). Don't add swing again.
+- **Chords: play `tones` (MIDI note numbers) + `bass`** exactly as given — they include
+  7ths/9ths for jazz etc. Convert MIDI → Hz before giving them to Tone.js.
+  `symbol` is for display.
+- **Transposing in the browser** (instant key change without a new request) is possible:
+  add k semitones to every note pitch, chord tone and bass, and rename chords with
+  `root_pc = (root_pc + k) % 12` + `suffix`. Re-requesting with `key` gives fresh ideas
+  in that key instead.
+- `kind`: `continuation` | `fresh` | `inversion` ("Mirror") | `sequence`.
+  `follows_seed: true` → play `seed.notes` first (at `seed.tempo_bpm`), then the idea.
+- `form`: the phrase shape (`AABA`, `ABAC`, `AAAB` …): which bars repeat the hook.
+- `novelty.label`: `novel` (≥ 0.5) or `echoes` (0.3–0.5); ideas below 0.3 are never returned.
+  Novelty is relative to the index — say "not in our index", never "original".
 
 ---
 
