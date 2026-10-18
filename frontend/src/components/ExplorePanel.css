@@ -5,12 +5,39 @@
   gap: 14px;
 }
 
+.explore__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .explore__head h2 {
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--faint);
+}
+
+.explore__chords {
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.explore__chords--on {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.explore__chords:hover {
+  color: var(--ink);
 }
 
 .explore__actions {
@@ -139,9 +166,29 @@
 }
 
 .idea__chords {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   color: var(--ink);
   font-size: 0.86rem;
   letter-spacing: 0.03em;
+}
+
+.idea__chord-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.idea__chord-sep {
+  margin: 0 0.4em;
+  color: var(--faint);
+}
+
+.idea__chord--on {
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-radius: 999px;
+  padding: 0 7px;
 }
 
 .idea .play-btn {

@@ -31,11 +31,21 @@ function noveltyLabel(label) {
   return label
 }
 
+let chordsPreference = true
+
 export default function ExplorePanel({ queryNotes, mockMode, playback, onPlayback }) {
   const [ideas, setIdeas] = useState(null)
   const [requestBody, setRequestBody] = useState(null)
   const [generating, setGenerating] = useState(false)
   const [error, setError] = useState('')
+  const [chordsOn, setChordsOn] = useState(chordsPreference)
+
+  function toggleChords() {
+    setChordsOn((current) => {
+      chordsPreference = !current
+      return chordsPreference
+    })
+  }
 
   async function generate(body) {
     setError('')
@@ -86,13 +96,21 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
       return
     }
     const { melody, chords } = ideaPerformance(ideas?.seed, idea)
-    void playSequence(idea.id, melody, onPlayback, chords)
+    void playSequence(idea.id, melody, onPlayback, chordsOn ? chords : [])
   }
 
   return (
     <section className="explore" aria-labelledby="explore-heading" aria-busy={generating}>
       <div className="explore__head">
         <h2 id="explore-heading">Explore</h2>
+        <button
+          type="button"
+          className={chordsOn ? 'explore__chords explore__chords--on' : 'explore__chords'}
+          aria-pressed={chordsOn}
+          onClick={toggleChords}
+        >
+          Chords: {chordsOn ? 'On' : 'Off'}
+        </button>
       </div>
       <div className="explore__actions">
         {queryNotes ? (
@@ -125,7 +143,9 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
           <div className="explore__grid">
             {ideas.ideas.map((idea) => {
               const playing = playback?.id === idea.id
-              const symbols = (idea.chords ?? []).map((chord) => chord.symbol).filter(Boolean)
+              const chordLabels = (idea.chords ?? [])
+                .map((chord, index) => ({ symbol: chord.symbol, index }))
+                .filter((chord) => chord.symbol)
               return (
                 <article key={idea.id} className="idea">
                   <h3>{idea.title}</h3>
@@ -144,7 +164,25 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
                     activeIndex={playing && playback.index >= 0 ? playback.index : -1}
                     label={`Piano roll of ${idea.title}`}
                   />
-                  {symbols.length ? <p className="idea__chords">{symbols.join(' · ')}</p> : null}
+                  {chordLabels.length ? (
+                    <p className="idea__chords">
+                      {chordLabels.map((chord, position) => {
+                        const on = playing && playback.chordIndex === chord.index
+                        return (
+                          <span key={`${chord.index}-${chord.symbol}`} className="idea__chord-item">
+                            {position > 0 ? (
+                              <span className="idea__chord-sep" aria-hidden="true">
+                                ·
+                              </span>
+                            ) : null}
+                            <span className={on ? 'idea__chord idea__chord--on' : 'idea__chord'} aria-current={on ? 'true' : undefined}>
+                              {chord.symbol}
+                            </span>
+                          </span>
+                        )
+                      })}
+                    </p>
+                  ) : null}
                   <PlayButton
                     playing={playing}
                     onClick={() => playIdea(idea)}

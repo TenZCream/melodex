@@ -75,20 +75,37 @@ export function beatsToSeconds(notes, tempoBpm, shiftSeconds = 0) {
   }))
 }
 
-// Root, third, and fifth with the root in octave 3 (C3 = 48).
-export function chordTriad(symbol) {
+function parseChord(symbol) {
   const match = /^([A-Ga-g])([b#]?)(.*)$/.exec(String(symbol ?? '').trim())
-  if (!match) return []
+  if (!match) return null
   const letter = match[1].toUpperCase()
   const accidental = match[2].toLowerCase()
   const key = accidental === 'b' ? `${letter}B` : accidental === '#' ? `${letter}#` : letter
   const pc = PITCH_CLASS[key]
-  if (pc == null) return []
+  if (pc == null) return null
   const rest = match[3].toLowerCase()
   const diminished = rest.startsWith('dim') || rest.startsWith('°')
   const minor = diminished || rest.startsWith('min') || /^m(?!aj)/.test(rest)
-  const root = 48 + pc
-  return [root, root + (minor ? 3 : 4), root + (diminished ? 6 : 7)]
+  return { pc, minor, diminished }
+}
+
+// Close triad with the root in octave 4 (C4 = 60).
+export function chordTriad(symbol) {
+  const parsed = parseChord(symbol)
+  if (!parsed) return []
+  const root = 60 + parsed.pc
+  return [
+    root,
+    root + (parsed.minor ? 3 : 4),
+    root + (parsed.diminished ? 6 : 7),
+  ]
+}
+
+// Triad in octave 4, plus the root an octave lower as a bass note.
+export function chordVoicing(symbol) {
+  const triad = chordTriad(symbol)
+  if (!triad.length) return null
+  return { triad, bass: triad[0] - 12 }
 }
 
 export function ideaPerformance(seed, idea) {
@@ -103,16 +120,44 @@ export function ideaPerformance(seed, idea) {
   }
   const melody = [...lead, ...beatsToSeconds(idea.notes, tempo, shift)]
   const scale = 60 / tempo
-  const chords = (idea.chords ?? []).flatMap((chord) => {
-    const pitches = chordTriad(chord.symbol)
-    if (!pitches.length) return []
-    return [{
-      start: chord.start * scale + shift,
-      duration: Math.max(0.05, chord.duration * scale),
-      pitches,
-    }]
-  })
+  const chords = (idea.chords ?? []).flatMap((chord, index) =>
+    compingStrikes(chord, index, scale, shift),
+  )
   return { melody, chords }
+}
+
+// Strikes on beat 1 and beat 3, each held until just before the next one.
+function compingStrikes(chord, index, scale, shift) {
+  const voiced = chordVoicing(chord.symbol)
+  if (!voiced) return []
+  const end = chord.start + chord.duration
+  const ring = 2 * scale * 0.95
+  const held = (beat) => {
+    const untilEnd = (end - beat) * scale
+    return Math.min(ring, untilEnd)
+  }
+  let beat = Math.floor(chord.start / 2) * 2
+  if (beat < chord.start - 1e-4) beat += 2
+  const strikes = []
+  for (; beat < end - 1e-4; beat += 2) {
+    strikes.push({
+      start: beat * scale + shift,
+      duration: held(beat),
+      triad: voiced.triad,
+      bass: voiced.bass,
+      index,
+    })
+  }
+  if (!strikes.length) {
+    strikes.push({
+      start: chord.start * scale + shift,
+      duration: held(chord.start),
+      triad: voiced.triad,
+      bass: voiced.bass,
+      index,
+    })
+  }
+  return strikes
 }
 
 export function segmentToSeconds(result) {
