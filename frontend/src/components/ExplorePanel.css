@@ -12,6 +12,70 @@
   gap: 12px;
 }
 
+.explore__vibes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.explore__vibe {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  color: var(--muted);
+  background: transparent;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+
+.explore__vibe--on {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+.explore__vibe:hover:not(.explore__vibe--on) {
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--ink) 28%, var(--line));
+}
+
+.explore__vibe-desc {
+  margin: 0;
+  color: var(--faint);
+  font-size: 0.82rem;
+}
+
+.explore__fields {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+}
+
+.explore__field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--faint);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.explore__field select {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  font-size: 0.84rem;
+  color: var(--ink);
+  background: #101217;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 10px;
+}
+
 .explore__head h2 {
   font-size: 0.75rem;
   font-weight: 600;
@@ -126,6 +190,58 @@
   font-size: 1.05rem;
   font-weight: 500;
   letter-spacing: -0.02em;
+}
+
+.idea__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.idea__tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px 8px;
+  line-height: 1.4;
+}
+
+.idea__tag--happy {
+  color: #e3a15a;
+  border-color: color-mix(in srgb, #e3a15a 55%, transparent);
+}
+
+.idea__tag--sad {
+  color: #8eb7d6;
+  border-color: color-mix(in srgb, #8eb7d6 55%, transparent);
+}
+
+.idea__tag--pop {
+  color: #e59ab8;
+  border-color: color-mix(in srgb, #e59ab8 55%, transparent);
+}
+
+.idea__tag--mysterious {
+  color: #b7a4e0;
+  border-color: color-mix(in srgb, #b7a4e0 55%, transparent);
+}
+
+.idea__tag--dissonant {
+  color: #e08a72;
+  border-color: color-mix(in srgb, #e08a72 55%, transparent);
+}
+
+.idea__tag--jazzy {
+  color: #d6c36a;
+  border-color: color-mix(in srgb, #d6c36a 55%, transparent);
+}
+
+.idea__tag--swingy {
+  color: #8fbf8a;
+  border-color: color-mix(in srgb, #8fbf8a 55%, transparent);
 }
 
 .idea__desc {

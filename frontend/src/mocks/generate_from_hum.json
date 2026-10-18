@@ -91,35 +91,35 @@
    }
   ]
  },
+ "vibe": null,
  "ideas": [
   {
    "id": "idea-1",
    "kind": "continuation",
    "title": "Continuation",
-   "description": "What could come next: picks up where you stopped and brings it home.",
+   "description": "Pop answer to your phrase: picks up where you stopped and reuses your rhythm.",
    "follows_seed": true,
+   "vibe": "pop",
+   "vibe_label": "Pop",
+   "key": "Bb major",
+   "form": "ABAB",
+   "swing": false,
    "notes": [
     {
-     "pitch": 63,
-     "name": "D#4",
+     "pitch": 55,
+     "name": "G3",
      "start": 0.0,
-     "duration": 0.5
+     "duration": 1.0
     },
     {
-     "pitch": 63,
-     "name": "D#4",
-     "start": 0.5,
-     "duration": 0.5
-    },
-    {
-     "pitch": 62,
-     "name": "D4",
+     "pitch": 55,
+     "name": "G3",
      "start": 1.0,
      "duration": 1.0
     },
     {
-     "pitch": 57,
-     "name": "A3",
+     "pitch": 55,
+     "name": "G3",
      "start": 2.0,
      "duration": 1.0
     },
@@ -130,69 +130,378 @@
      "duration": 1.0
     },
     {
-     "pitch": 69,
-     "name": "A4",
+     "pitch": 58,
+     "name": "A#3",
      "start": 4.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 5.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 5.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 6.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 57,
+     "name": "A3",
+     "start": 6.5,
      "duration": 1.5
     },
     {
-     "pitch": 65,
-     "name": "F4",
-     "start": 5.5,
+     "pitch": 58,
+     "name": "A#3",
+     "start": 8.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 9.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 10.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 11.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 12.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 13.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 63,
+     "name": "D#4",
+     "start": 13.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 14.0,
      "duration": 0.5
     },
     {
      "pitch": 58,
      "name": "A#3",
-     "start": 6.0,
-     "duration": 2.0
+     "start": 14.5,
+     "duration": 1.5
     }
    ],
    "tempo_bpm": 109.0,
    "novelty": {
-    "score": 0.892,
+    "score": 0.628,
     "label": "novel",
-    "message": "Not found among our 30 indexed melodies. Closest: \u201cJingle Bells\u201d (11% similar).",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cYankee Doodle\u201d (37% similar).",
     "nearest": {
-     "id": "famous-005",
-     "title": "Jingle Bells",
-     "composer": "James Lord Pierpont",
-     "similarity": 0.108
+     "id": "famous-029",
+     "title": "Yankee Doodle",
+     "composer": "Traditional (American)",
+     "similarity": 0.372
     }
    },
    "chords": [
     {
      "start": 0.0,
-     "duration": 2.0,
-     "roman": "I",
-     "symbol": "Bb"
-    },
-    {
-     "start": 2.0,
-     "duration": 2.0,
-     "roman": "V",
-     "symbol": "F"
+     "duration": 4.0,
+     "roman": "vi",
+     "symbol": "Gm",
+     "root_pc": 7,
+     "quality": "min",
+     "suffix": "m",
+     "tones": [
+      55,
+      58,
+      62
+     ],
+     "bass": 43
     },
     {
      "start": 4.0,
-     "duration": 2.0,
-     "roman": "V",
-     "symbol": "F"
+     "duration": 4.0,
+     "roman": "IV",
+     "symbol": "Eb",
+     "root_pc": 3,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      51,
+      55,
+      58
+     ],
+     "bass": 39
     },
     {
-     "start": 6.0,
-     "duration": 2.0,
+     "start": 8.0,
+     "duration": 4.0,
      "roman": "I",
-     "symbol": "Bb"
+     "symbol": "Bb",
+     "root_pc": 10,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      58,
+      62,
+      65
+     ],
+     "bass": 46
+    },
+    {
+     "start": 12.0,
+     "duration": 4.0,
+     "roman": "V",
+     "symbol": "F",
+     "root_pc": 5,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      53,
+      57,
+      60
+     ],
+     "bass": 41
     }
    ]
   },
   {
    "id": "idea-2",
+   "kind": "fresh",
+   "title": "Pop idea",
+   "description": "Catchy and singable: one short syncopated hook, repeated with small changes.",
+   "follows_seed": false,
+   "vibe": "pop",
+   "vibe_label": "Pop",
+   "key": "Bb major",
+   "form": "AABA",
+   "swing": false,
+   "notes": [
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 0.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 63,
+     "name": "D#4",
+     "start": 1.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 1.5,
+     "duration": 1.0
+    },
+    {
+     "pitch": 63,
+     "name": "D#4",
+     "start": 2.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 3.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 4.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 5.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 5.5,
+     "duration": 1.0
+    },
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 6.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 7.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 63,
+     "name": "D#4",
+     "start": 8.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 9.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 10.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 57,
+     "name": "A3",
+     "start": 10.5,
+     "duration": 1.5
+    },
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 12.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 55,
+     "name": "G3",
+     "start": 13.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 13.5,
+     "duration": 1.0
+    },
+    {
+     "pitch": 55,
+     "name": "G3",
+     "start": 14.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 15.0,
+     "duration": 1.5
+    }
+   ],
+   "tempo_bpm": 109.0,
+   "novelty": {
+    "score": 0.824,
+    "label": "novel",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cOh! Susanna\u201d (18% similar).",
+    "nearest": {
+     "id": "famous-020",
+     "title": "Oh! Susanna",
+     "composer": "Stephen Foster",
+     "similarity": 0.176
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 4.0,
+     "roman": "I",
+     "symbol": "Bb",
+     "root_pc": 10,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      58,
+      62,
+      65
+     ],
+     "bass": 46
+    },
+    {
+     "start": 4.0,
+     "duration": 4.0,
+     "roman": "V",
+     "symbol": "F",
+     "root_pc": 5,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      53,
+      57,
+      60
+     ],
+     "bass": 41
+    },
+    {
+     "start": 8.0,
+     "duration": 4.0,
+     "roman": "vi",
+     "symbol": "Gm",
+     "root_pc": 7,
+     "quality": "min",
+     "suffix": "m",
+     "tones": [
+      55,
+      58,
+      62
+     ],
+     "bass": 43
+    },
+    {
+     "start": 12.0,
+     "duration": 4.0,
+     "roman": "IV",
+     "symbol": "Eb",
+     "root_pc": 3,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      51,
+      55,
+      58
+     ],
+     "bass": 39
+    }
+   ]
+  },
+  {
+   "id": "idea-3",
    "kind": "inversion",
    "title": "Mirror",
    "description": "Your phrase turned upside-down: every rise becomes a fall.",
    "follows_seed": false,
+   "vibe": null,
+   "vibe_label": null,
+   "key": "Bb major",
+   "form": null,
+   "swing": false,
    "notes": [
     {
      "pitch": 58,
@@ -296,286 +605,334 @@
      "start": 0.0,
      "duration": 2.0,
      "roman": "I",
-     "symbol": "Bb"
+     "symbol": "Bb",
+     "root_pc": 10,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      58,
+      62,
+      65
+     ],
+     "bass": 46
     },
     {
      "start": 2.0,
      "duration": 2.0,
      "roman": "IV",
-     "symbol": "Eb"
+     "symbol": "Eb",
+     "root_pc": 3,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      51,
+      55,
+      58
+     ],
+     "bass": 39
     },
     {
      "start": 4.0,
      "duration": 2.0,
      "roman": "I",
-     "symbol": "Bb"
+     "symbol": "Bb",
+     "root_pc": 10,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      58,
+      62,
+      65
+     ],
+     "bass": 46
     },
     {
      "start": 6.0,
      "duration": 2.0,
      "roman": "IV",
-     "symbol": "Eb"
+     "symbol": "Eb",
+     "root_pc": 3,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      51,
+      55,
+      58
+     ],
+     "bass": 39
     },
     {
      "start": 8.0,
      "duration": 2.0,
      "roman": "I",
-     "symbol": "Bb"
+     "symbol": "Bb",
+     "root_pc": 10,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      58,
+      62,
+      65
+     ],
+     "bass": 46
     },
     {
      "start": 10.0,
      "duration": 2.0,
      "roman": "IV",
-     "symbol": "Eb"
+     "symbol": "Eb",
+     "root_pc": 3,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      51,
+      55,
+      58
+     ],
+     "bass": 39
     },
     {
      "start": 12.0,
      "duration": 2.0,
      "roman": "V",
-     "symbol": "F"
+     "symbol": "F",
+     "root_pc": 5,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      53,
+      57,
+      60
+     ],
+     "bass": 41
     },
     {
      "start": 14.0,
      "duration": 2.0,
      "roman": "I",
-     "symbol": "Bb"
-    }
-   ]
-  },
-  {
-   "id": "idea-3",
-   "kind": "sequence",
-   "title": "Sequence",
-   "description": "Your opening motif, restated on a new step of the scale.",
-   "follows_seed": false,
-   "notes": [
-    {
-     "pitch": 58,
-     "name": "A#3",
-     "start": 0.0,
-     "duration": 1.0
-    },
-    {
-     "pitch": 58,
-     "name": "A#3",
-     "start": 1.0,
-     "duration": 1.0
-    },
-    {
-     "pitch": 65,
-     "name": "F4",
-     "start": 2.0,
-     "duration": 1.0
-    },
-    {
-     "pitch": 65,
-     "name": "F4",
-     "start": 3.0,
-     "duration": 1.0
-    },
-    {
-     "pitch": 57,
-     "name": "A3",
-     "start": 4.0,
-     "duration": 1.0
-    },
-    {
-     "pitch": 57,
-     "name": "A3",
-     "start": 5.0,
-     "duration": 1.0
-    },
-    {
-     "pitch": 63,
-     "name": "D#4",
-     "start": 6.0,
-     "duration": 1.0
-    },
-    {
-     "pitch": 63,
-     "name": "D#4",
-     "start": 7.0,
-     "duration": 1.0
-    },
-    {
-     "pitch": 55,
-     "name": "G3",
-     "start": 8.0,
-     "duration": 1.0
-    },
-    {
-     "pitch": 55,
-     "name": "G3",
-     "start": 9.0,
-     "duration": 1.0
-    },
-    {
-     "pitch": 58,
-     "name": "A#3",
-     "start": 10.0,
-     "duration": 2.0
-    }
-   ],
-   "tempo_bpm": 109.0,
-   "novelty": {
-    "score": 0.469,
-    "label": "echoes",
-    "message": "Echoes \u201cJingle Bells\u201d (53% similar) but isn't a match.",
-    "nearest": {
-     "id": "famous-005",
-     "title": "Jingle Bells",
-     "composer": "James Lord Pierpont",
-     "similarity": 0.531
-    }
-   },
-   "chords": [
-    {
-     "start": 0.0,
-     "duration": 2.0,
-     "roman": "I",
-     "symbol": "Bb"
-    },
-    {
-     "start": 2.0,
-     "duration": 2.0,
-     "roman": "V",
-     "symbol": "F"
-    },
-    {
-     "start": 4.0,
-     "duration": 2.0,
-     "roman": "V",
-     "symbol": "F"
-    },
-    {
-     "start": 6.0,
-     "duration": 2.0,
-     "roman": "IV",
-     "symbol": "Eb"
-    },
-    {
-     "start": 8.0,
-     "duration": 2.0,
-     "roman": "vi",
-     "symbol": "Gm"
-    },
-    {
-     "start": 10.0,
-     "duration": 2.0,
-     "roman": "I",
-     "symbol": "Bb"
+     "symbol": "Bb",
+     "root_pc": 10,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      58,
+      62,
+      65
+     ],
+     "bass": 46
     }
    ]
   },
   {
    "id": "idea-4",
    "kind": "fresh",
-   "title": "Fresh idea",
-   "description": "A new phrase in Bb major.",
+   "title": "Pop idea",
+   "description": "Catchy and singable: one short syncopated hook, repeated with small changes.",
    "follows_seed": false,
+   "vibe": "pop",
+   "vibe_label": "Pop",
+   "key": "Bb major",
+   "form": "ABAB",
+   "swing": false,
    "notes": [
     {
-     "pitch": 58,
-     "name": "A#3",
+     "pitch": 62,
+     "name": "D4",
      "start": 0.0,
      "duration": 1.0
     },
     {
-     "pitch": 57,
-     "name": "A3",
+     "pitch": 62,
+     "name": "D4",
      "start": 1.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 63,
+     "name": "D#4",
+     "start": 1.5,
+     "duration": 1.0
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 2.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 3.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 4.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 4.5,
+     "duration": 1.0
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 5.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 63,
+     "name": "D#4",
+     "start": 6.0,
      "duration": 1.0
     },
     {
      "pitch": 65,
      "name": "F4",
-     "start": 2.0,
-     "duration": 2.0
-    },
-    {
-     "pitch": 65,
-     "name": "F4",
-     "start": 4.0,
+     "start": 7.0,
      "duration": 1.0
     },
     {
      "pitch": 67,
      "name": "G4",
-     "start": 5.0,
-     "duration": 2.0
+     "start": 8.0,
+     "duration": 1.0
     },
     {
-     "pitch": 69,
-     "name": "A4",
-     "start": 7.0,
-     "duration": 2.0
-    },
-    {
-     "pitch": 62,
-     "name": "D4",
+     "pitch": 65,
+     "name": "F4",
      "start": 9.0,
      "duration": 0.5
     },
     {
+     "pitch": 65,
+     "name": "F4",
+     "start": 9.5,
+     "duration": 1.0
+    },
+    {
+     "pitch": 63,
+     "name": "D#4",
+     "start": 10.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 11.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 12.0,
+     "duration": 0.5
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 12.5,
+     "duration": 1.0
+    },
+    {
+     "pitch": 63,
+     "name": "D#4",
+     "start": 13.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 14.0,
+     "duration": 1.0
+    },
+    {
      "pitch": 70,
      "name": "A#4",
-     "start": 9.5,
-     "duration": 2.0
+     "start": 15.0,
+     "duration": 1.5
     }
    ],
-   "tempo_bpm": 109.0,
+   "tempo_bpm": 98.0,
    "novelty": {
-    "score": 0.891,
+    "score": 0.771,
     "label": "novel",
-    "message": "Not found among our 30 indexed melodies. Closest: \u201cOde to Joy (Symphony No. 9)\u201d (11% similar).",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cOh! Susanna\u201d (23% similar).",
     "nearest": {
-     "id": "famous-002",
-     "title": "Ode to Joy (Symphony No. 9)",
-     "composer": "Ludwig van Beethoven",
-     "similarity": 0.109
+     "id": "famous-020",
+     "title": "Oh! Susanna",
+     "composer": "Stephen Foster",
+     "similarity": 0.229
     }
    },
    "chords": [
     {
      "start": 0.0,
-     "duration": 2.0,
-     "roman": "I",
-     "symbol": "Bb"
-    },
-    {
-     "start": 2.0,
-     "duration": 2.0,
-     "roman": "V",
-     "symbol": "F"
+     "duration": 4.0,
+     "roman": "vi",
+     "symbol": "Gm",
+     "root_pc": 7,
+     "quality": "min",
+     "suffix": "m",
+     "tones": [
+      55,
+      58,
+      62
+     ],
+     "bass": 43
     },
     {
      "start": 4.0,
-     "duration": 2.0,
-     "roman": "I",
-     "symbol": "Bb"
-    },
-    {
-     "start": 6.0,
-     "duration": 2.0,
-     "roman": "V",
-     "symbol": "F"
+     "duration": 4.0,
+     "roman": "IV",
+     "symbol": "Eb",
+     "root_pc": 3,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      51,
+      55,
+      58
+     ],
+     "bass": 39
     },
     {
      "start": 8.0,
-     "duration": 2.0,
+     "duration": 4.0,
      "roman": "I",
-     "symbol": "Bb"
+     "symbol": "Bb",
+     "root_pc": 10,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      58,
+      62,
+      65
+     ],
+     "bass": 46
     },
     {
-     "start": 10.0,
-     "duration": 2.0,
-     "roman": "I",
-     "symbol": "Bb"
+     "start": 12.0,
+     "duration": 4.0,
+     "roman": "V",
+     "symbol": "F",
+     "root_pc": 5,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      53,
+      57,
+      60
+     ],
+     "bass": 41
     }
    ]
   }
  ],
- "candidates_considered": 37,
- "too_familiar_dropped": 7,
+ "candidates_considered": 9,
+ "too_familiar_dropped": 2,
  "index_size": 30
 }

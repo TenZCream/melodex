@@ -1,8 +1,7 @@
-import { Filter, Part, PolySynth, Synth, getDraw, getTransport, start } from 'tone'
+import { Part, Synth, getDraw, getTransport, start } from 'tone'
+import { ensureChords, ensureMelody, releaseInstruments } from './instruments'
 
 let synth = null
-let pad = null
-let padFilter = null
 let parts = []
 let endTimer = 0
 let generation = 0
@@ -17,18 +16,6 @@ function voice() {
     }).toDestination()
   }
   return synth
-}
-
-function chordPad() {
-  if (!pad) {
-    padFilter = new Filter({ frequency: 1200, type: 'lowpass', rolloff: -12, Q: 0.7 }).toDestination()
-    pad = new PolySynth(Synth, {
-      oscillator: { type: 'fatsawtooth' },
-      envelope: { attack: 0.05, decay: 0.4, sustain: 0.5, release: 0.8 },
-      volume: -14,
-    }).connect(padFilter)
-  }
-  return pad
 }
 
 function midiToFreq(midi) {
@@ -48,19 +35,7 @@ function disposeParts() {
 }
 
 function silencePad() {
-  if (pad) {
-    try {
-      pad.releaseAll()
-    } catch {
-      // The pad may already be silent.
-    }
-    pad.dispose()
-    pad = null
-  }
-  if (padFilter) {
-    padFilter.dispose()
-    padFilter = null
-  }
+  releaseInstruments()
 }
 
 export function stopPlayback() {
@@ -95,6 +70,11 @@ export async function playSequence(id, notes, onChange, chords = []) {
   stopPlayback()
   if (!notes?.length) return
   const gen = generation
+  const melodyReady = ensureMelody()
+  const chordsReady = chords.length ? ensureChords() : null
+  const melodyVoice = await melodyReady
+  const chordVoice = chordsReady ? await chordsReady : null
+  if (gen !== generation) return
   listener = onChange
   const highlight = { id, index: -1, chordIndex: -1 }
   const emit = () => {
@@ -102,9 +82,8 @@ export async function playSequence(id, notes, onChange, chords = []) {
     onChange?.({ ...highlight })
   }
   emit()
-  const instrument = voice()
   const melody = new Part((time, event) => {
-    instrument.triggerAttackRelease(midiToFreq(event.pitch), Math.max(0.05, event.duration * 0.92), time)
+    melodyVoice.trigger(midiToFreq(event.pitch), Math.max(0.05, event.duration * 0.92), time)
     if (event.index < 0) return
     getDraw().schedule(() => {
       highlight.index = event.index
@@ -119,12 +98,12 @@ export async function playSequence(id, notes, onChange, chords = []) {
   melody.start(0)
   parts.push(melody)
 
-  if (chords.length) {
-    const harmony = chordPad()
+  if (chordVoice && chords.length) {
     const chordPart = new Part((time, event) => {
       const length = Math.max(0.08, event.duration)
-      harmony.triggerAttackRelease(event.triad.map(midiToFreq), length, time, 0.55)
-      harmony.triggerAttackRelease([midiToFreq(event.bass)], length, time, 0.32)
+      const tones = (event.tones ?? []).map(midiToFreq)
+      if (tones.length) chordVoice.trigger(tones, length, time, 0.55)
+      if (event.bass != null) chordVoice.trigger([midiToFreq(event.bass)], length, time, 0.32)
       getDraw().schedule(() => {
         highlight.chordIndex = event.index
         emit()
@@ -132,7 +111,7 @@ export async function playSequence(id, notes, onChange, chords = []) {
     }, chords.map((chord) => ({
       time: Math.max(0, chord.start),
       duration: Math.max(0.08, chord.duration),
-      triad: chord.triad,
+      tones: chord.tones ?? [],
       bass: chord.bass,
       index: chord.index ?? 0,
     })))

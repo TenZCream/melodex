@@ -1,0 +1,95 @@
+{
+ "vibes": [
+  {
+   "id": "happy",
+   "label": "Happy",
+   "description": "Bright and bouncy: upward leaps, a hook that comes back, a firm ending.",
+   "tempo": [
+    112,
+    132
+   ],
+   "swing": false,
+   "mode": "major"
+  },
+  {
+   "id": "sad",
+   "label": "Sad",
+   "description": "Slow and falling: long notes, sighing figures, minor color; may not fully resolve.",
+   "tempo": [
+    64,
+    80
+   ],
+   "swing": false,
+   "mode": "minor"
+  },
+  {
+   "id": "pop",
+   "label": "Pop",
+   "description": "Catchy and singable: one short syncopated hook, repeated with small changes.",
+   "tempo": [
+    96,
+    118
+   ],
+   "swing": false,
+   "mode": "major"
+  },
+  {
+   "id": "mysterious",
+   "label": "Mysterious",
+   "description": "Sparse and modal: creeping half-steps, space between notes, open endings.",
+   "tempo": [
+    70,
+    92
+   ],
+   "swing": false,
+   "mode": "minor (modal)"
+  },
+  {
+   "id": "dissonant",
+   "label": "Dissonant",
+   "description": "Tense and unsettled: tritones, chromatic clashes, jagged leaps, no easy resolution.",
+   "tempo": [
+    80,
+    108
+   ],
+   "swing": false,
+   "mode": "(chromatic)"
+  },
+  {
+   "id": "jazzy",
+   "label": "Jazzy",
+   "description": "Swung 8ths over 7th chords: chord-tone arpeggios, chromatic approach notes.",
+   "tempo": [
+    112,
+    150
+   ],
+   "swing": true,
+   "mode": "major"
+  },
+  {
+   "id": "swingy",
+   "label": "Swingy",
+   "description": "Bluesy swing: short riffs repeated call-and-response, blue notes, laid-back feel.",
+   "tempo": [
+    100,
+    132
+   ],
+   "swing": true,
+   "mode": "blues"
+  }
+ ],
+ "keys": [
+  "C",
+  "Db",
+  "D",
+  "Eb",
+  "E",
+  "F",
+  "F#",
+  "G",
+  "Ab",
+  "A",
+  "Bb",
+  "B"
+ ]
+}

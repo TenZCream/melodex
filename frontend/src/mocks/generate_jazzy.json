@@ -1,0 +1,890 @@
+{
+ "seed": {
+  "used": false,
+  "key": "C major",
+  "num_notes": 0,
+  "tempo_bpm": 100.0,
+  "notes": []
+ },
+ "vibe": "jazzy",
+ "ideas": [
+  {
+   "id": "idea-1",
+   "kind": "fresh",
+   "title": "Jazzy idea",
+   "description": "Swung 8ths over 7th chords: chord-tone arpeggios, chromatic approach notes.",
+   "follows_seed": false,
+   "vibe": "jazzy",
+   "vibe_label": "Jazzy",
+   "key": "C major",
+   "form": "ABCB",
+   "swing": true,
+   "notes": [
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 0.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 0.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 1.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 66,
+     "name": "F#4",
+     "start": 1.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 2.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 2.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 3.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 4.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 4.64,
+     "duration": 1.0
+    },
+    {
+     "pitch": 69,
+     "name": "A4",
+     "start": 5.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 71,
+     "name": "B4",
+     "start": 6.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 74,
+     "name": "D5",
+     "start": 7.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 72,
+     "name": "C5",
+     "start": 8.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 69,
+     "name": "A4",
+     "start": 8.64,
+     "duration": 1.0
+    },
+    {
+     "pitch": 66,
+     "name": "F#4",
+     "start": 9.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 10.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 72,
+     "name": "C5",
+     "start": 11.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 72,
+     "name": "C5",
+     "start": 12.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 69,
+     "name": "A4",
+     "start": 12.64,
+     "duration": 1.0
+    },
+    {
+     "pitch": 77,
+     "name": "F5",
+     "start": 13.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 76,
+     "name": "E5",
+     "start": 14.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 72,
+     "name": "C5",
+     "start": 15.0,
+     "duration": 1.5
+    }
+   ],
+   "tempo_bpm": 131.0,
+   "novelty": {
+    "score": 0.939,
+    "label": "novel",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cDeck the Halls\u201d (6% similar).",
+    "nearest": {
+     "id": "famous-030",
+     "title": "Deck the Halls",
+     "composer": "Traditional (Welsh)",
+     "similarity": 0.061
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 4.0,
+     "roman": "ii7",
+     "symbol": "Dm7",
+     "root_pc": 2,
+     "quality": "m7",
+     "suffix": "m7",
+     "tones": [
+      50,
+      53,
+      57,
+      60
+     ],
+     "bass": 38
+    },
+    {
+     "start": 4.0,
+     "duration": 4.0,
+     "roman": "V7",
+     "symbol": "G7",
+     "root_pc": 7,
+     "quality": "7",
+     "suffix": "7",
+     "tones": [
+      55,
+      59,
+      62,
+      65
+     ],
+     "bass": 43
+    },
+    {
+     "start": 8.0,
+     "duration": 4.0,
+     "roman": "Imaj7",
+     "symbol": "Cmaj7",
+     "root_pc": 0,
+     "quality": "maj7",
+     "suffix": "maj7",
+     "tones": [
+      48,
+      52,
+      55,
+      59
+     ],
+     "bass": 36
+    },
+    {
+     "start": 12.0,
+     "duration": 4.0,
+     "roman": "Imaj7",
+     "symbol": "Cmaj7",
+     "root_pc": 0,
+     "quality": "maj7",
+     "suffix": "maj7",
+     "tones": [
+      48,
+      52,
+      55,
+      59
+     ],
+     "bass": 36
+    }
+   ]
+  },
+  {
+   "id": "idea-2",
+   "kind": "fresh",
+   "title": "Jazzy idea",
+   "description": "Swung 8ths over 7th chords: chord-tone arpeggios, chromatic approach notes.",
+   "follows_seed": false,
+   "vibe": "jazzy",
+   "vibe_label": "Jazzy",
+   "key": "C major",
+   "form": "AABA",
+   "swing": true,
+   "notes": [
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 0.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 0.64,
+     "duration": 1.0
+    },
+    {
+     "pitch": 61,
+     "name": "C#4",
+     "start": 1.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 2.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 71,
+     "name": "B4",
+     "start": 3.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 4.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 4.64,
+     "duration": 1.0
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 5.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 6.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 63,
+     "name": "D#4",
+     "start": 7.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 8.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 8.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 57,
+     "name": "A3",
+     "start": 9.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 59,
+     "name": "B3",
+     "start": 9.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 10.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 58,
+     "name": "A#3",
+     "start": 11.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 59,
+     "name": "B3",
+     "start": 12.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 12.64,
+     "duration": 1.0
+    },
+    {
+     "pitch": 68,
+     "name": "G#4",
+     "start": 13.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 14.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 72,
+     "name": "C5",
+     "start": 15.0,
+     "duration": 1.5
+    }
+   ],
+   "tempo_bpm": 122.0,
+   "novelty": {
+    "score": 1.0,
+    "label": "novel",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cGreensleeves\u201d (0% similar).",
+    "nearest": {
+     "id": "famous-009",
+     "title": "Greensleeves",
+     "composer": "Traditional (English)",
+     "similarity": 0.0
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 4.0,
+     "roman": "Imaj9",
+     "symbol": "Cmaj9",
+     "root_pc": 0,
+     "quality": "maj9",
+     "suffix": "maj9",
+     "tones": [
+      48,
+      50,
+      52,
+      55,
+      59
+     ],
+     "bass": 36
+    },
+    {
+     "start": 4.0,
+     "duration": 4.0,
+     "roman": "ii9",
+     "symbol": "Dm9",
+     "root_pc": 2,
+     "quality": "m9",
+     "suffix": "m9",
+     "tones": [
+      50,
+      52,
+      53,
+      57,
+      60
+     ],
+     "bass": 38
+    },
+    {
+     "start": 8.0,
+     "duration": 4.0,
+     "roman": "iii7",
+     "symbol": "Em7",
+     "root_pc": 4,
+     "quality": "m7",
+     "suffix": "m7",
+     "tones": [
+      52,
+      55,
+      59,
+      62
+     ],
+     "bass": 40
+    },
+    {
+     "start": 12.0,
+     "duration": 4.0,
+     "roman": "V9",
+     "symbol": "G9",
+     "root_pc": 7,
+     "quality": "9",
+     "suffix": "9",
+     "tones": [
+      55,
+      57,
+      59,
+      62,
+      65
+     ],
+     "bass": 43
+    }
+   ]
+  },
+  {
+   "id": "idea-3",
+   "kind": "fresh",
+   "title": "Jazzy idea",
+   "description": "Swung 8ths over 7th chords: chord-tone arpeggios, chromatic approach notes.",
+   "follows_seed": false,
+   "vibe": "jazzy",
+   "vibe_label": "Jazzy",
+   "key": "C major",
+   "form": "AABA",
+   "swing": true,
+   "notes": [
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 0.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 0.64,
+     "duration": 1.0
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 1.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 2.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 63,
+     "name": "D#4",
+     "start": 3.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 4.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 4.64,
+     "duration": 1.0
+    },
+    {
+     "pitch": 66,
+     "name": "F#4",
+     "start": 5.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 6.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 73,
+     "name": "C#5",
+     "start": 7.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 72,
+     "name": "C5",
+     "start": 8.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 69,
+     "name": "A4",
+     "start": 9.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 9.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 69,
+     "name": "A4",
+     "start": 10.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 10.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 11.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 59,
+     "name": "B3",
+     "start": 12.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 12.64,
+     "duration": 1.0
+    },
+    {
+     "pitch": 66,
+     "name": "F#4",
+     "start": 13.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 14.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 69,
+     "name": "A4",
+     "start": 15.0,
+     "duration": 1.5
+    }
+   ],
+   "tempo_bpm": 134.0,
+   "novelty": {
+    "score": 0.831,
+    "label": "novel",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cBrahms' Lullaby\u201d (17% similar).",
+    "nearest": {
+     "id": "famous-023",
+     "title": "Brahms' Lullaby",
+     "composer": "Johannes Brahms",
+     "similarity": 0.169
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 4.0,
+     "roman": "Imaj7",
+     "symbol": "Cmaj7",
+     "root_pc": 0,
+     "quality": "maj7",
+     "suffix": "maj7",
+     "tones": [
+      48,
+      52,
+      55,
+      59
+     ],
+     "bass": 36
+    },
+    {
+     "start": 4.0,
+     "duration": 4.0,
+     "roman": "vi7",
+     "symbol": "Am7",
+     "root_pc": 9,
+     "quality": "m7",
+     "suffix": "m7",
+     "tones": [
+      57,
+      60,
+      64,
+      67
+     ],
+     "bass": 45
+    },
+    {
+     "start": 8.0,
+     "duration": 4.0,
+     "roman": "ii7",
+     "symbol": "Dm7",
+     "root_pc": 2,
+     "quality": "m7",
+     "suffix": "m7",
+     "tones": [
+      50,
+      53,
+      57,
+      60
+     ],
+     "bass": 38
+    },
+    {
+     "start": 12.0,
+     "duration": 4.0,
+     "roman": "V7",
+     "symbol": "G7",
+     "root_pc": 7,
+     "quality": "7",
+     "suffix": "7",
+     "tones": [
+      55,
+      59,
+      62,
+      65
+     ],
+     "bass": 43
+    }
+   ]
+  },
+  {
+   "id": "idea-4",
+   "kind": "fresh",
+   "title": "Jazzy idea",
+   "description": "Swung 8ths over 7th chords: chord-tone arpeggios, chromatic approach notes.",
+   "follows_seed": false,
+   "vibe": "jazzy",
+   "vibe_label": "Jazzy",
+   "key": "C major",
+   "form": "ABCB",
+   "swing": true,
+   "notes": [
+    {
+     "pitch": 69,
+     "name": "A4",
+     "start": 0.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 1.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 63,
+     "name": "D#4",
+     "start": 1.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 2.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 68,
+     "name": "G#4",
+     "start": 3.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 4.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 4.64,
+     "duration": 1.0
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 5.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 61,
+     "name": "C#4",
+     "start": 6.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 7.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 72,
+     "name": "C5",
+     "start": 8.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 71,
+     "name": "B4",
+     "start": 9.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 9.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 10.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 11.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 12.0,
+     "duration": 0.64
+    },
+    {
+     "pitch": 57,
+     "name": "A3",
+     "start": 12.64,
+     "duration": 1.0
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 13.64,
+     "duration": 0.36
+    },
+    {
+     "pitch": 59,
+     "name": "B3",
+     "start": 14.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 59,
+     "name": "B3",
+     "start": 15.0,
+     "duration": 1.5
+    }
+   ],
+   "tempo_bpm": 120.0,
+   "novelty": {
+    "score": 0.97,
+    "label": "novel",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cMary Had a Little Lamb\u201d (3% similar).",
+    "nearest": {
+     "id": "famous-003",
+     "title": "Mary Had a Little Lamb",
+     "composer": "Traditional",
+     "similarity": 0.03
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 4.0,
+     "roman": "iii7",
+     "symbol": "Em7",
+     "root_pc": 4,
+     "quality": "m7",
+     "suffix": "m7",
+     "tones": [
+      52,
+      55,
+      59,
+      62
+     ],
+     "bass": 40
+    },
+    {
+     "start": 4.0,
+     "duration": 4.0,
+     "roman": "VI7",
+     "symbol": "A7",
+     "root_pc": 9,
+     "quality": "7",
+     "suffix": "7",
+     "tones": [
+      57,
+      61,
+      64,
+      67
+     ],
+     "bass": 45
+    },
+    {
+     "start": 8.0,
+     "duration": 4.0,
+     "roman": "ii7",
+     "symbol": "Dm7",
+     "root_pc": 2,
+     "quality": "m7",
+     "suffix": "m7",
+     "tones": [
+      50,
+      53,
+      57,
+      60
+     ],
+     "bass": 38
+    },
+    {
+     "start": 12.0,
+     "duration": 4.0,
+     "roman": "V7",
+     "symbol": "G7",
+     "root_pc": 7,
+     "quality": "7",
+     "suffix": "7",
+     "tones": [
+      55,
+      59,
+      62,
+      65
+     ],
+     "bass": 43
+    }
+   ]
+  }
+ ],
+ "candidates_considered": 6,
+ "too_familiar_dropped": 0,
+ "index_size": 30
+}

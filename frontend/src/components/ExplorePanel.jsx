@@ -1,7 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { API_BASE } from '../config'
+import {
+  INSTRUMENTS,
+  setChordInstrument,
+  setMelodyInstrument,
+  subscribeInstrumentLoading,
+} from '../instruments'
 import mockFresh from '../mocks/generate_fresh.json'
-import mockFromHum from '../mocks/generate_from_hum.json'
+import mockJazzy from '../mocks/generate_jazzy.json'
+import mockVibes from '../mocks/vibes.json'
 import { beatsToSeconds, ideaPerformance } from '../music'
 import { playSequence, stopPlayback } from '../playback'
 import ErrorBanner from './ErrorBanner'
@@ -32,13 +39,53 @@ function noveltyLabel(label) {
 }
 
 let chordsPreference = true
+let vibePreference = null
+let keyPreference = 'auto'
+let melodyPreference = 'piano'
+let chordInstPreference = 'piano'
 
 export default function ExplorePanel({ queryNotes, mockMode, playback, onPlayback }) {
   const [ideas, setIdeas] = useState(null)
-  const [requestBody, setRequestBody] = useState(null)
+  const [source, setSource] = useState(null)
   const [generating, setGenerating] = useState(false)
   const [error, setError] = useState('')
   const [chordsOn, setChordsOn] = useState(chordsPreference)
+  const [vibes, setVibes] = useState(mockMode ? mockVibes.vibes : [])
+  const [keys, setKeys] = useState(mockMode ? mockVibes.keys : [])
+  const [vibeId, setVibeId] = useState(vibePreference)
+  const [keyId, setKeyId] = useState(keyPreference)
+  const [melodyId, setMelodyId] = useState(melodyPreference)
+  const [chordId, setChordId] = useState(chordInstPreference)
+  const [loadingSounds, setLoadingSounds] = useState(false)
+
+  useEffect(() => {
+    setMelodyInstrument(melodyId)
+  }, [melodyId])
+
+  useEffect(() => {
+    setChordInstrument(chordId)
+  }, [chordId])
+
+  useEffect(() => subscribeInstrumentLoading(setLoadingSounds), [])
+
+  useEffect(() => {
+    if (mockMode) return undefined
+    const controller = new AbortController()
+    fetch(`${API_BASE}/api/vibes`, { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error('vibes')
+        return response.json()
+      })
+      .then((data) => {
+        setVibes(data.vibes ?? [])
+        setKeys(data.keys ?? [])
+      })
+      .catch((err) => {
+        if (err.name === 'AbortError') return
+        setError(SERVER_DOWN)
+      })
+    return () => controller.abort()
+  }, [mockMode])
 
   function toggleChords() {
     setChordsOn((current) => {
@@ -47,13 +94,48 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
     })
   }
 
-  async function generate(body) {
+  function chooseVibe(id) {
+    vibePreference = id
+    setVibeId(id)
+  }
+
+  function chooseKey(id) {
+    keyPreference = id
+    setKeyId(id)
+  }
+
+  function chooseMelody(id) {
+    melodyPreference = id
+    setMelodyId(id)
+  }
+
+  function chooseChords(id) {
+    chordInstPreference = id
+    setChordId(id)
+  }
+
+  function requestBody(kind) {
+    const body = {}
+    if (kind === 'notes') {
+      body.notes = (queryNotes ?? []).map((note) => ({
+        pitch: note.pitch,
+        start: note.start,
+        duration: note.duration,
+      }))
+    }
+    if (vibeId) body.vibe = vibeId
+    if (keyId !== 'auto') body.key = keyId
+    return body
+  }
+
+  async function generate(kind) {
+    const body = requestBody(kind)
     setError('')
-    setRequestBody(body)
+    setSource(kind)
     setGenerating(true)
     try {
       if (mockMode) {
-        setIdeas(body.notes ? mockFromHum : mockFresh)
+        setIdeas(body.vibe ? mockJazzy : mockFresh)
         stopPlayback()
         return
       }
@@ -81,15 +163,6 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
     }
   }
 
-  function fromThisMelody() {
-    const notes = (queryNotes ?? []).map((note) => ({
-      pitch: note.pitch,
-      start: note.start,
-      duration: note.duration,
-    }))
-    return generate({ notes })
-  }
-
   function playIdea(idea) {
     if (playback?.id === idea.id) {
       stopPlayback()
@@ -99,10 +172,69 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
     void playSequence(idea.id, melody, onPlayback, chordsOn ? chords : [])
   }
 
+  const selectedVibe = vibes.find((vibe) => vibe.id === vibeId)
+
   return (
-    <section className="explore" aria-labelledby="explore-heading" aria-busy={generating}>
+    <section className="explore" aria-labelledby="explore-heading" aria-busy={generating || loadingSounds}>
       <div className="explore__head">
         <h2 id="explore-heading">Explore</h2>
+      </div>
+      <div className="explore__vibes" role="radiogroup" aria-label="Vibe">
+        <button
+          type="button"
+          role="radio"
+          className={vibeId == null ? 'explore__vibe explore__vibe--on' : 'explore__vibe'}
+          aria-checked={vibeId == null}
+          onClick={() => chooseVibe(null)}
+        >
+          🎲 Surprise me
+        </button>
+        {vibes.map((vibe) => (
+          <button
+            key={vibe.id}
+            type="button"
+            role="radio"
+            className={vibeId === vibe.id ? 'explore__vibe explore__vibe--on' : 'explore__vibe'}
+            aria-checked={vibeId === vibe.id}
+            onClick={() => chooseVibe(vibe.id)}
+          >
+            {vibe.label}
+          </button>
+        ))}
+      </div>
+      {selectedVibe?.description ? <p className="explore__vibe-desc">{selectedVibe.description}</p> : null}
+      <div className="explore__fields">
+        <label className="explore__field">
+          Key
+          <select value={keyId} onChange={(event) => chooseKey(event.target.value)}>
+            <option value="auto">Auto</option>
+            {keys.map((key) => (
+              <option key={key} value={key}>
+                {key}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="explore__field">
+          Melody
+          <select value={melodyId} onChange={(event) => chooseMelody(event.target.value)}>
+            {INSTRUMENTS.map((instrument) => (
+              <option key={instrument.id} value={instrument.id}>
+                {instrument.label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="explore__field">
+          Chords
+          <select value={chordId} onChange={(event) => chooseChords(event.target.value)}>
+            {INSTRUMENTS.map((instrument) => (
+              <option key={instrument.id} value={instrument.id}>
+                {instrument.label}
+              </option>
+            ))}
+          </select>
+        </label>
         <button
           type="button"
           className={chordsOn ? 'explore__chords explore__chords--on' : 'explore__chords'}
@@ -112,13 +244,18 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
           Chords: {chordsOn ? 'On' : 'Off'}
         </button>
       </div>
+      {loadingSounds ? (
+        <p className="explore__status" role="status">
+          Loading sounds…
+        </p>
+      ) : null}
       <div className="explore__actions">
         {queryNotes ? (
-          <button type="button" className="explore__seed" disabled={generating} onClick={fromThisMelody}>
+          <button type="button" className="explore__seed" disabled={generating} onClick={() => generate('notes')}>
             ✨ Explore new ideas from this melody
           </button>
         ) : null}
-        <button type="button" className="explore__surprise" disabled={generating} onClick={() => generate({})}>
+        <button type="button" className="explore__surprise" disabled={generating} onClick={() => generate('fresh')}>
           Surprise me
         </button>
       </div>
@@ -127,8 +264,8 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
         <button
           type="button"
           className="explore__again"
-          disabled={generating || !requestBody}
-          onClick={() => generate(requestBody)}
+          disabled={generating || !source}
+          onClick={() => generate(source)}
         >
           Generate again
         </button>
@@ -149,6 +286,15 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
               return (
                 <article key={idea.id} className="idea">
                   <h3>{idea.title}</h3>
+                  <div className="idea__tags">
+                    {idea.vibe_label ? (
+                      <span className={`idea__tag idea__tag--${idea.vibe || 'vibe'}`}>{idea.vibe_label}</span>
+                    ) : null}
+                    {idea.key ? <span className="idea__tag">{idea.key}</span> : null}
+                    {idea.tempo_bpm ? <span className="idea__tag">{Math.round(idea.tempo_bpm)} bpm</span> : null}
+                    {idea.form ? <span className="idea__tag">{idea.form}</span> : null}
+                    {idea.swing ? <span className="idea__tag">swing</span> : null}
+                  </div>
                   <p className="idea__desc">{idea.description}</p>
                   {idea.novelty ? (
                     <div className="idea__novelty">
@@ -175,7 +321,10 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
                                 ·
                               </span>
                             ) : null}
-                            <span className={on ? 'idea__chord idea__chord--on' : 'idea__chord'} aria-current={on ? 'true' : undefined}>
+                            <span
+                              className={on ? 'idea__chord idea__chord--on' : 'idea__chord'}
+                              aria-current={on ? 'true' : undefined}
+                            >
                               {chord.symbol}
                             </span>
                           </span>
