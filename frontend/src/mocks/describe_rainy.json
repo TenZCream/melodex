@@ -1,0 +1,634 @@
+{
+ "seed": {
+  "used": false,
+  "key": "A major",
+  "num_notes": 0,
+  "tempo_bpm": 100.0,
+  "notes": []
+ },
+ "vibe": "sad",
+ "ideas": [
+  {
+   "id": "idea-1",
+   "kind": "fresh",
+   "title": "Window Rain",
+   "description": "Slow and falling: long notes, sighing figures, minor color; may not fully resolve.",
+   "follows_seed": false,
+   "vibe": "sad",
+   "vibe_label": "Sad",
+   "key": "A minor",
+   "form": "AABA",
+   "swing": false,
+   "notes": [
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 0.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 2.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 3.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 57,
+     "name": "A3",
+     "start": 4.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 59,
+     "name": "B3",
+     "start": 6.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 57,
+     "name": "A3",
+     "start": 7.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 8.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 59,
+     "name": "B3",
+     "start": 9.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 10.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 56,
+     "name": "G#3",
+     "start": 12.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 57,
+     "name": "A3",
+     "start": 14.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 57,
+     "name": "A3",
+     "start": 15.0,
+     "duration": 1.5
+    }
+   ],
+   "tempo_bpm": 72.0,
+   "novelty": {
+    "score": 0.687,
+    "label": "novel",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cFr\u00e8re Jacques\u201d (31% similar).",
+    "nearest": {
+     "id": "famous-006",
+     "title": "Fr\u00e8re Jacques",
+     "composer": "Traditional (French)",
+     "similarity": 0.313
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 4.0,
+     "roman": "i",
+     "symbol": "Am",
+     "root_pc": 9,
+     "quality": "min",
+     "suffix": "m",
+     "tones": [
+      57,
+      60,
+      64
+     ],
+     "bass": 45
+    },
+    {
+     "start": 4.0,
+     "duration": 4.0,
+     "roman": "VImaj7",
+     "symbol": "Fmaj7",
+     "root_pc": 5,
+     "quality": "maj7",
+     "suffix": "maj7",
+     "tones": [
+      53,
+      57,
+      60,
+      64
+     ],
+     "bass": 41
+    },
+    {
+     "start": 8.0,
+     "duration": 4.0,
+     "roman": "iv7",
+     "symbol": "Dm7",
+     "root_pc": 2,
+     "quality": "m7",
+     "suffix": "m7",
+     "tones": [
+      50,
+      53,
+      57,
+      60
+     ],
+     "bass": 38
+    },
+    {
+     "start": 12.0,
+     "duration": 4.0,
+     "roman": "V7",
+     "symbol": "E7",
+     "root_pc": 4,
+     "quality": "7",
+     "suffix": "7",
+     "tones": [
+      52,
+      56,
+      59,
+      62
+     ],
+     "bass": 40
+    }
+   ]
+  },
+  {
+   "id": "idea-2",
+   "kind": "fresh",
+   "title": "Last Light",
+   "description": "Slow and falling: long notes, sighing figures, minor color; may not fully resolve.",
+   "follows_seed": false,
+   "vibe": "sad",
+   "vibe_label": "Sad",
+   "key": "A minor",
+   "form": "AABA",
+   "swing": false,
+   "notes": [
+    {
+     "pitch": 59,
+     "name": "B3",
+     "start": 0.0,
+     "duration": 3.0
+    },
+    {
+     "pitch": 57,
+     "name": "A3",
+     "start": 3.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 53,
+     "name": "F3",
+     "start": 4.0,
+     "duration": 3.0
+    },
+    {
+     "pitch": 52,
+     "name": "E3",
+     "start": 7.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 53,
+     "name": "F3",
+     "start": 8.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 55,
+     "name": "G3",
+     "start": 10.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 52,
+     "name": "E3",
+     "start": 12.0,
+     "duration": 3.0
+    },
+    {
+     "pitch": 52,
+     "name": "E3",
+     "start": 15.0,
+     "duration": 1.5
+    }
+   ],
+   "tempo_bpm": 72.0,
+   "novelty": {
+    "score": 0.416,
+    "label": "echoes",
+    "message": "Echoes \u201cWhen the Saints Go Marching In\u201d (58% similar) but isn't a match.",
+    "nearest": {
+     "id": "famous-012",
+     "title": "When the Saints Go Marching In",
+     "composer": "Traditional (spiritual)",
+     "similarity": 0.584
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 4.0,
+     "roman": "i7",
+     "symbol": "Am7",
+     "root_pc": 9,
+     "quality": "m7",
+     "suffix": "m7",
+     "tones": [
+      57,
+      60,
+      64,
+      67
+     ],
+     "bass": 45
+    },
+    {
+     "start": 4.0,
+     "duration": 4.0,
+     "roman": "iv7",
+     "symbol": "Dm7",
+     "root_pc": 2,
+     "quality": "m7",
+     "suffix": "m7",
+     "tones": [
+      50,
+      53,
+      57,
+      60
+     ],
+     "bass": 38
+    },
+    {
+     "start": 8.0,
+     "duration": 4.0,
+     "roman": "VII",
+     "symbol": "G",
+     "root_pc": 7,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      55,
+      59,
+      62
+     ],
+     "bass": 43
+    },
+    {
+     "start": 12.0,
+     "duration": 4.0,
+     "roman": "IIImaj7",
+     "symbol": "Cmaj7",
+     "root_pc": 0,
+     "quality": "maj7",
+     "suffix": "maj7",
+     "tones": [
+      48,
+      52,
+      55,
+      59
+     ],
+     "bass": 36
+    }
+   ]
+  },
+  {
+   "id": "idea-3",
+   "kind": "fresh",
+   "title": "Paper Boats",
+   "description": "Slow and falling: long notes, sighing figures, minor color; may not fully resolve.",
+   "follows_seed": false,
+   "vibe": "sad",
+   "vibe_label": "Sad",
+   "key": "A minor",
+   "form": "ABAB",
+   "swing": false,
+   "notes": [
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 0.0,
+     "duration": 1.5
+    },
+    {
+     "pitch": 62,
+     "name": "D4",
+     "start": 1.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 60,
+     "name": "C4",
+     "start": 2.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 57,
+     "name": "A3",
+     "start": 4.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 59,
+     "name": "B3",
+     "start": 6.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 57,
+     "name": "A3",
+     "start": 8.0,
+     "duration": 1.5
+    },
+    {
+     "pitch": 55,
+     "name": "G3",
+     "start": 9.5,
+     "duration": 0.5
+    },
+    {
+     "pitch": 52,
+     "name": "E3",
+     "start": 10.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 56,
+     "name": "G#3",
+     "start": 12.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 59,
+     "name": "B3",
+     "start": 14.0,
+     "duration": 2.0
+    }
+   ],
+   "tempo_bpm": 72.0,
+   "novelty": {
+    "score": 0.723,
+    "label": "novel",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cCanon in D (melody)\u201d (28% similar).",
+    "nearest": {
+     "id": "famous-026",
+     "title": "Canon in D (melody)",
+     "composer": "Johann Pachelbel",
+     "similarity": 0.277
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 4.0,
+     "roman": "i",
+     "symbol": "Am",
+     "root_pc": 9,
+     "quality": "min",
+     "suffix": "m",
+     "tones": [
+      57,
+      60,
+      64
+     ],
+     "bass": 45
+    },
+    {
+     "start": 4.0,
+     "duration": 4.0,
+     "roman": "VImaj7",
+     "symbol": "Fmaj7",
+     "root_pc": 5,
+     "quality": "maj7",
+     "suffix": "maj7",
+     "tones": [
+      53,
+      57,
+      60,
+      64
+     ],
+     "bass": 41
+    },
+    {
+     "start": 8.0,
+     "duration": 4.0,
+     "roman": "iv7",
+     "symbol": "Dm7",
+     "root_pc": 2,
+     "quality": "m7",
+     "suffix": "m7",
+     "tones": [
+      50,
+      53,
+      57,
+      60
+     ],
+     "bass": 38
+    },
+    {
+     "start": 12.0,
+     "duration": 4.0,
+     "roman": "V7",
+     "symbol": "E7",
+     "root_pc": 4,
+     "quality": "7",
+     "suffix": "7",
+     "tones": [
+      52,
+      56,
+      59,
+      62
+     ],
+     "bass": 40
+    }
+   ]
+  },
+  {
+   "id": "idea-4",
+   "kind": "fresh",
+   "title": "Quiet Kitchen",
+   "description": "Slow and falling: long notes, sighing figures, minor color; may not fully resolve.",
+   "follows_seed": false,
+   "vibe": "sad",
+   "vibe_label": "Sad",
+   "key": "A minor",
+   "form": "ABAC",
+   "swing": false,
+   "notes": [
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 0.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 2.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 3.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 69,
+     "name": "A4",
+     "start": 4.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 67,
+     "name": "G4",
+     "start": 5.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 6.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 69,
+     "name": "A4",
+     "start": 8.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 10.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 11.0,
+     "duration": 1.0
+    },
+    {
+     "pitch": 65,
+     "name": "F4",
+     "start": 12.0,
+     "duration": 2.0
+    },
+    {
+     "pitch": 64,
+     "name": "E4",
+     "start": 14.0,
+     "duration": 2.0
+    }
+   ],
+   "tempo_bpm": 72.0,
+   "novelty": {
+    "score": 0.618,
+    "label": "novel",
+    "message": "Not found among our 30 indexed melodies. Closest: \u201cFr\u00e8re Jacques\u201d (38% similar).",
+    "nearest": {
+     "id": "famous-006",
+     "title": "Fr\u00e8re Jacques",
+     "composer": "Traditional (French)",
+     "similarity": 0.382
+    }
+   },
+   "chords": [
+    {
+     "start": 0.0,
+     "duration": 4.0,
+     "roman": "VI",
+     "symbol": "F",
+     "root_pc": 5,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      53,
+      57,
+      60
+     ],
+     "bass": 41
+    },
+    {
+     "start": 4.0,
+     "duration": 4.0,
+     "roman": "VII",
+     "symbol": "G",
+     "root_pc": 7,
+     "quality": "maj",
+     "suffix": "",
+     "tones": [
+      55,
+      59,
+      62
+     ],
+     "bass": 43
+    },
+    {
+     "start": 8.0,
+     "duration": 4.0,
+     "roman": "i",
+     "symbol": "Am",
+     "root_pc": 9,
+     "quality": "min",
+     "suffix": "m",
+     "tones": [
+      57,
+      60,
+      64
+     ],
+     "bass": 45
+    },
+    {
+     "start": 12.0,
+     "duration": 4.0,
+     "roman": "i",
+     "symbol": "Am",
+     "root_pc": 9,
+     "quality": "min",
+     "suffix": "m",
+     "tones": [
+      57,
+      60,
+      64
+     ],
+     "bass": 45
+    }
+   ]
+  }
+ ],
+ "candidates_considered": 6,
+ "too_familiar_dropped": 1,
+ "index_size": 30,
+ "interpretation": {
+  "text": "rainy 3am drive home after a breakup",
+  "vibe": "sad",
+  "vibe_label": "Sad",
+  "key": "A",
+  "tempo_bpm": 72,
+  "instrument": "piano",
+  "reason": "Matched \u201crain\u201d, \u201cbreakup\u201d to a sad feel.",
+  "source": "fallback",
+  "model": null,
+  "note": "Gemini isn't configured (no GEMINI_API_KEY); used keyword matching."
+ }
+}

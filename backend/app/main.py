@@ -17,6 +17,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from .catalog import load_catalog
+from . import gemini
 from .generate import Explorer, novelty_label
 from .vibes import VIBE_ORDER, VIBES
 from .melody import Note, midi_to_name
@@ -31,6 +32,7 @@ DEBUG_KEEP = 10
 TIE_MARGIN = 0.05
 
 log = logging.getLogger("uvicorn.error")
+gemini.load_dotenv(str(Path(__file__).resolve().parent.parent / ".env"))
 
 app = FastAPI(title="Melodex API", version=VERSION,
               description="Hum it. Find it. Then find something new.")
@@ -61,6 +63,13 @@ class GenerateRequest(BaseModel):
     seed: int | None = None
     vibe: str | None = None        # one of /api/vibes ids, or null for "surprise me"
     key: str | None = None         # tonic name, e.g. "C", "F#", "Bb"; null = auto
+
+
+class DescribeRequest(BaseModel):
+    text: str = Field(min_length=2, max_length=300)
+    notes: list[NoteIn] = Field(default_factory=list, max_length=200)
+    num_ideas: int = Field(default=4, ge=1, le=8)
+    seed: int | None = None
 
 
 _KEY_PCS = {"C": 0, "B#": 0, "C#": 1, "DB": 1, "D": 2, "D#": 3, "EB": 3, "E": 4, "FB": 4,
@@ -218,9 +227,6 @@ async def search_audio(file: UploadFile = File(...), top_k: int = Form(5)):
 
 @app.post("/api/generate")
 def generate(req: GenerateRequest):
-    seed_notes = [Note(n.pitch, n.start, n.duration) for n in sorted(req.notes, key=lambda n: n.start)]
-    if 0 < len(seed_notes) < 3:
-        raise HTTPException(400, "Give at least 3 notes to build on, or none for fresh ideas.")
     vibe = (req.vibe or "").strip().lower() or None
     if vibe in ("surprise", "random", "any"):
         vibe = None
@@ -231,8 +237,40 @@ def generate(req: GenerateRequest):
         key_pc = _KEY_PCS.get(req.key.strip().upper().replace("♯", "#").replace("♭", "B"))
         if key_pc is None:
             raise HTTPException(400, f"Unknown key '{req.key}'. Use a note name like C, F#, or Bb.")
-    out = EXPLORER.generate(seed_notes or None, num_ideas=req.num_ideas, rng_seed=req.seed,
-                            vibe=vibe, key_pc=key_pc)
+    return _generate_response(req.notes, vibe, key_pc, req.num_ideas, req.seed)
+
+
+@app.post("/api/describe")
+def describe(req: DescribeRequest):
+    """Free-text mood -> Gemini picks vibe/key/tempo/instrument/titles -> composer writes ideas."""
+    plan = gemini.interpret(req.text, n=req.num_ideas)
+    log.info("describe %r -> %s via %s", req.text[:60], plan["vibe"], plan["source"])
+    # with a hum, stay in the user's key so the continuation flows; otherwise use Gemini's key
+    key_pc = None if req.notes else _KEY_PCS[plan["key"].upper()]
+    out = _generate_response(req.notes, plan["vibe"], key_pc,
+                             req.num_ideas, req.seed, tempo=float(plan["tempo_bpm"]))
+    titles = iter(plan["titles"])
+    for idea in out["ideas"]:
+        if idea["vibe"]:                      # composed ideas get the creative titles
+            idea["title"] = next(titles, idea["title"])
+    out["interpretation"] = {
+        "text": req.text,
+        "vibe": plan["vibe"], "vibe_label": VIBES[plan["vibe"]].label,
+        "key": out["seed"]["key"].split()[0] if req.notes else plan["key"],
+        "tempo_bpm": plan["tempo_bpm"], "instrument": plan["instrument"],
+        "reason": plan["reason"], "source": plan["source"], "model": plan["model"],
+        "note": plan["note"],
+    }
+    return out
+
+
+def _generate_response(notes_in, vibe, key_pc, num_ideas, seed, tempo=None):
+    seed_notes = [Note(n.pitch, n.start, n.duration) for n in sorted(notes_in, key=lambda n: n.start)]
+    if 0 < len(seed_notes) < 3:
+        raise HTTPException(400, "Give at least 3 notes to build on, or none for fresh ideas.")
+    out = EXPLORER.generate(seed_notes or None, num_ideas=num_ideas, rng_seed=seed,
+                            vibe=vibe, key_pc=key_pc, tempo=tempo)
+
     tempo = out["seed"]["tempo_bpm"]
     ideas = []
     for k, idea in enumerate(out["ideas"], start=1):

@@ -265,3 +265,19 @@ chords audible (≥ C3), surprise mixes ≥ 3 vibes, ideas never ≥ 70% similar
 tune, and a "vibes sound different" test (sad falls / happy rises, jazz busiest,
 mysterious has rests, dissonant tritones, swingy blue notes, pop hook ≥ 0.8…).
 Search suites and 9/9 real recordings unchanged.
+
+### Checkpoint 8 — Gemini "Describe a vibe" (Sun ~6:45 AM PT)
+
+**Built `backend/app/gemini.py` + `POST /api/describe`.** Free text ("rainy 3am drive")
+goes to Gemini, which returns JSON: vibe (one of the 7), key, tempo, instrument and a
+creative title per idea, plus a one-sentence reason. The vibe composer then writes the
+melodies, so the music stays rule-based and explainable; Gemini is the "producer".
+- Stdlib HTTPS only (no new dependency); key from `GEMINI_API_KEY` in `backend/.env`
+  (git-ignored; tiny built-in .env loader).
+- Tries current Flash model ids in order (`gemini-flash-latest`, `gemini-3.6-flash`, …),
+  remembers the one that works; `GEMINI_MODEL` overrides.
+- Validates Gemini's JSON (unknown vibe/key → rejected); on any failure, a keyword
+  fallback answers instead and the response says `source: "fallback"` with the reason.
+- With a hum, ideas stay in the hum's key so the continuation flows.
+Tested here with the fallback and simulated Gemini replies (Google isn't reachable from
+Claude's sandbox); first live Gemini call is on Lexing's laptop.

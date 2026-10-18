@@ -313,7 +313,7 @@ class Explorer:
 
     def generate(self, seed_notes: list[Note] | None, num_ideas: int = 4,
                  rng_seed: int | None = None, vibe: str | None = None,
-                 key_pc: int | None = None) -> dict:
+                 key_pc: int | None = None, tempo: float | None = None) -> dict:
         """vibe: one of VIBES (or None). key_pc: tonic pitch class 0-11 (or None = auto)."""
         rng = np.random.default_rng(rng_seed)
         has_seed = bool(seed_notes) and len(seed_notes) >= 3
@@ -346,6 +346,7 @@ class Explorer:
             if tonic_midi > 65:
                 tonic_midi -= 12                           # keep melodies comfortably mid-range
 
+        tempo_override = tempo
         default_vibe = vibe or ("sad" if sc.mode == "minor" else "pop")
         candidates: list[Idea] = []
 
@@ -362,7 +363,7 @@ class Explorer:
             for mus, ev, prog, form, _f in best_of(v, rng, n=30, keep=keep, start=start, motif=motif):
                 notes = [Note(tonic_midi + e.pitch, round(e.start, 3), round(e.dur, 3))
                          for e in ev if e.pitch is not None]
-                t = tempo or float(rng.integers(v.tempo[0], v.tempo[1] + 1))
+                t = tempo or tempo_override or float(rng.integers(v.tempo[0], v.tempo[1] + 1))
                 add(Idea(kind, title, desc, notes, musicality=mus, progression=prog,
                          vibe=v.id, tempo_bpm=t, form=form,
                          key=f"{_KEY_NAMES[tonic_pc]} {v.mode_label}"))

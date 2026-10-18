@@ -213,7 +213,37 @@ Response:
 - `novelty.label`: `novel` (≥ 0.5) or `echoes` (0.3–0.5); ideas below 0.3 are never returned.
   Novelty is relative to the index — say "not in our index", never "original".
 
+## POST /api/describe  (Gemini "Describe a vibe")
+Free text → Gemini picks a vibe, key, tempo, instrument and a creative title per idea →
+the composer writes the melodies. Mock: `frontend-mocks/describe_rainy.json`.
+
+Request:
+```json
+{ "text": "rainy 3am drive home after a breakup", "notes": [], "num_ideas": 4, "seed": null }
+```
+- `text`: 2–300 characters (required). `notes`: optional hum to build on (then ideas stay
+  in the hum's key). `num_ideas`, `seed`: as in /api/generate.
+
+Response: **exactly the /api/generate response**, plus:
+```json
+"interpretation": {
+  "text": "rainy 3am drive home after a breakup",
+  "vibe": "sad", "vibe_label": "Sad", "key": "A", "tempo_bpm": 72,
+  "instrument": "piano",
+  "reason": "Rain and heartbreak suggest a slow, falling minor melody.",
+  "source": "gemini",
+  "model": "gemini-flash-latest",
+  "note": null
+}
+```
+- Composed ideas get Gemini's creative titles in `ideas[].title`.
+- `instrument` is a suggestion: one of `piano`, `strings`, `guitar`, `flute`, `synth`,
+  `electric-piano`. Apply it to the melody instrument dropdown.
+- `source` is `"gemini"` or `"fallback"` (keyword matching, used if there's no API key or
+  Gemini is unreachable). When it's `"fallback"`, `note` says why. The feature always works.
+- Setup: put `GEMINI_API_KEY=...` in `backend/.env` (git-ignored) and restart the backend.
+
 ---
 
 ## Coming later (not built yet)
-- `POST /api/explain` — Gemini explanation of a match
+- (nothing planned)

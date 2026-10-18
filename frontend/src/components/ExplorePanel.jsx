@@ -6,6 +6,7 @@ import {
   setMelodyInstrument,
   subscribeInstrumentLoading,
 } from '../instruments'
+import mockDescribe from '../mocks/describe_rainy.json'
 import mockFresh from '../mocks/generate_fresh.json'
 import mockJazzy from '../mocks/generate_jazzy.json'
 import mockVibes from '../mocks/vibes.json'
@@ -26,7 +27,7 @@ import './ExplorePanel.css'
 
 const SERVER_DOWN = "Can't reach the Melodex server. Is the backend running on port 8000?"
 
-async function readDetail(response) {
+async function readDetail(response, fallback = 'New ideas could not be generated.') {
   try {
     const body = await response.json()
     if (typeof body?.detail === 'string' && body.detail.trim()) return body.detail
@@ -37,13 +38,22 @@ async function readDetail(response) {
   } catch {
     // A non-JSON error body still needs a readable line in the banner.
   }
-  return 'New ideas could not be generated.'
+  return fallback
 }
 
 function noveltyLabel(label) {
   if (label === 'novel') return 'Not in our index'
   if (label === 'echoes') return 'Echoes a known tune'
   return label
+}
+
+const MELODY_FROM_API = {
+  piano: 'piano',
+  strings: 'strings',
+  guitar: 'guitar',
+  flute: 'flute',
+  synth: 'synth',
+  'electric-piano': 'epiano',
 }
 
 let vibePreference = null
@@ -55,6 +65,8 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
   const [ideas, setIdeas] = useState(null)
   const [source, setSource] = useState(null)
   const [generating, setGenerating] = useState(false)
+  const [describing, setDescribing] = useState(false)
+  const [describeText, setDescribeText] = useState('')
   const [error, setError] = useState('')
   const savedMixer = getMixerSettings()
   const [melodyOn, setMelodyOn] = useState(!savedMixer.melodyMuted)
@@ -118,15 +130,24 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
     setChordId(id)
   }
 
+  function applyInterpretation(interpretation) {
+    if (!interpretation) return
+    if (interpretation.vibe) chooseVibe(interpretation.vibe)
+    const melody = MELODY_FROM_API[interpretation.instrument]
+    if (melody) chooseMelody(melody)
+  }
+
+  function noteList() {
+    return (queryNotes ?? []).map((note) => ({
+      pitch: note.pitch,
+      start: note.start,
+      duration: note.duration,
+    }))
+  }
+
   function requestBody(kind) {
     const body = {}
-    if (kind === 'notes') {
-      body.notes = (queryNotes ?? []).map((note) => ({
-        pitch: note.pitch,
-        start: note.start,
-        duration: note.duration,
-      }))
-    }
+    if (kind === 'notes') body.notes = noteList()
     if (vibeId) body.vibe = vibeId
     if (keyId !== 'auto') body.key = keyId
     return body
@@ -167,6 +188,47 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
     }
   }
 
+  async function describe(event) {
+    event?.preventDefault?.()
+    const text = describeText.trim()
+    if (text.length < 2 || text.length > 300 || describing || generating) return
+    setError('')
+    setDescribing(true)
+    try {
+      if (mockMode) {
+        setIdeas(mockDescribe)
+        setSource('describe')
+        applyInterpretation(mockDescribe.interpretation)
+        stopPlayback()
+        return
+      }
+      let response
+      try {
+        response = await fetch(`${API_BASE}/api/describe`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, notes: noteList() }),
+        })
+      } catch {
+        setError(SERVER_DOWN)
+        return
+      }
+      if (!response.ok) {
+        setError(await readDetail(response, 'The description could not be composed.'))
+        return
+      }
+      const data = await response.json()
+      setIdeas(data)
+      setSource('describe')
+      applyInterpretation(data.interpretation)
+      stopPlayback()
+    } catch {
+      setError('The description could not be composed.')
+    } finally {
+      setDescribing(false)
+    }
+  }
+
   function playIdea(idea) {
     if (playback?.id === idea.id) {
       stopPlayback()
@@ -179,10 +241,22 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
   const selectedVibe = vibes.find((vibe) => vibe.id === vibeId)
 
   return (
-    <section className="explore" aria-labelledby="explore-heading" aria-busy={generating || loadingSounds}>
+    <section className="explore" aria-labelledby="explore-heading" aria-busy={generating || describing || loadingSounds}>
       <div className="explore__head">
         <h2 id="explore-heading">Explore</h2>
       </div>
+      <form className="describe" onSubmit={describe}>
+        <input
+          value={describeText}
+          maxLength={300}
+          placeholder="Describe a vibe… e.g. rainy 3am drive home"
+          aria-label="Describe a vibe"
+          onChange={(event) => setDescribeText(event.target.value)}
+        />
+        <button type="submit" disabled={describing || generating || describeText.trim().length < 2}>
+          ✨ Compose
+        </button>
+      </form>
       <div className="explore__vibes" role="radiogroup" aria-label="Vibe">
         <button
           type="button"
@@ -306,11 +380,11 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
       ) : null}
       <div className="explore__actions">
         {queryNotes ? (
-          <button type="button" className="explore__seed" disabled={generating} onClick={() => generate('notes')}>
+          <button type="button" className="explore__seed" disabled={generating || describing} onClick={() => generate('notes')}>
             ✨ Explore new ideas from this melody
           </button>
         ) : null}
-        <button type="button" className="explore__surprise" disabled={generating} onClick={() => generate('fresh')}>
+        <button type="button" className="explore__surprise" disabled={generating || describing} onClick={() => generate('fresh')}>
           Surprise me
         </button>
       </div>
@@ -319,16 +393,49 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
         <button
           type="button"
           className="explore__again"
-          disabled={generating || !source}
-          onClick={() => generate(source)}
+          disabled={generating || describing || !source}
+          onClick={() => (source === 'describe' ? describe() : generate(source))}
         >
           Generate again
         </button>
+      ) : null}
+      {describing ? (
+        <p className="explore__status" role="status">
+          Gemini is choosing the vibe…
+        </p>
       ) : null}
       {generating ? (
         <p className="explore__status" role="status">
           Writing new melodies…
         </p>
+      ) : null}
+      {ideas?.interpretation ? (
+        <div className="interpret">
+          {ideas.interpretation.source === 'gemini' ? (
+            <span className="interpret__source">Powered by Gemini</span>
+          ) : null}
+          {ideas.interpretation.source === 'fallback' ? (
+            <span className="interpret__source" title={ideas.interpretation.note || undefined}>
+              Keyword mode
+            </span>
+          ) : null}
+          <p className="interpret__heard">
+            Gemini heard:{' '}
+            {[
+              ideas.interpretation.vibe_label,
+              ideas.interpretation.key,
+              Number.isFinite(Number(ideas.interpretation.tempo_bpm))
+                ? `${Math.round(Number(ideas.interpretation.tempo_bpm))} bpm`
+                : null,
+              ideas.interpretation.instrument,
+            ]
+              .filter(Boolean)
+              .join(' · ')}
+          </p>
+          {ideas.interpretation.reason ? (
+            <p className="interpret__reason">{ideas.interpretation.reason}</p>
+          ) : null}
+        </div>
       ) : null}
       {ideas ? (
         <>
