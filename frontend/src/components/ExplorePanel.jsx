@@ -10,7 +10,15 @@ import mockFresh from '../mocks/generate_fresh.json'
 import mockJazzy from '../mocks/generate_jazzy.json'
 import mockVibes from '../mocks/vibes.json'
 import { beatsToSeconds, ideaPerformance } from '../music'
-import { playSequence, stopPlayback } from '../playback'
+import {
+  getMixerSettings,
+  playSequence,
+  setChordMuted,
+  setChordVolume,
+  setMelodyMuted,
+  setMelodyVolume,
+  stopPlayback,
+} from '../playback'
 import ErrorBanner from './ErrorBanner'
 import PianoRoll from './PianoRoll'
 import PlayButton from './PlayButton'
@@ -38,7 +46,6 @@ function noveltyLabel(label) {
   return label
 }
 
-let chordsPreference = true
 let vibePreference = null
 let keyPreference = 'auto'
 let melodyPreference = 'piano'
@@ -49,7 +56,11 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
   const [source, setSource] = useState(null)
   const [generating, setGenerating] = useState(false)
   const [error, setError] = useState('')
-  const [chordsOn, setChordsOn] = useState(chordsPreference)
+  const savedMixer = getMixerSettings()
+  const [melodyOn, setMelodyOn] = useState(!savedMixer.melodyMuted)
+  const [melodyVolume, setMelodyLevel] = useState(savedMixer.melody)
+  const [chordsOn, setChordsOn] = useState(!savedMixer.chordsMuted)
+  const [chordVolume, setChordLevel] = useState(savedMixer.chords)
   const [vibes, setVibes] = useState(mockMode ? mockVibes.vibes : [])
   const [keys, setKeys] = useState(mockMode ? mockVibes.keys : [])
   const [vibeId, setVibeId] = useState(vibePreference)
@@ -86,13 +97,6 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
       })
     return () => controller.abort()
   }, [mockMode])
-
-  function toggleChords() {
-    setChordsOn((current) => {
-      chordsPreference = !current
-      return chordsPreference
-    })
-  }
 
   function chooseVibe(id) {
     vibePreference = id
@@ -169,7 +173,7 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
       return
     }
     const { melody, chords } = ideaPerformance(ideas?.seed, idea)
-    void playSequence(idea.id, melody, onPlayback, chordsOn ? chords : [])
+    void playSequence(idea.id, melody, onPlayback, chords)
   }
 
   const selectedVibe = vibes.find((vibe) => vibe.id === vibeId)
@@ -235,14 +239,65 @@ export default function ExplorePanel({ queryNotes, mockMode, playback, onPlaybac
             ))}
           </select>
         </label>
-        <button
-          type="button"
-          className={chordsOn ? 'explore__chords explore__chords--on' : 'explore__chords'}
-          aria-pressed={chordsOn}
-          onClick={toggleChords}
-        >
-          Chords: {chordsOn ? 'On' : 'Off'}
-        </button>
+      </div>
+      <div className="mixer" aria-label="Mixer">
+        <span className="mixer__title">Mixer</span>
+        <div className="mixer__row">
+          <button
+            type="button"
+            className={melodyOn ? 'mixer__toggle mixer__toggle--on' : 'mixer__toggle'}
+            aria-pressed={melodyOn}
+            title="Turn the melody off to sing along over the chords."
+            onClick={() => {
+              const next = !melodyOn
+              setMelodyOn(next)
+              setMelodyMuted(!next)
+            }}
+          >
+            Melody
+          </button>
+          <input
+            className={melodyOn ? 'mixer__slider' : 'mixer__slider mixer__slider--off'}
+            type="range"
+            min="0"
+            max="100"
+            value={melodyVolume}
+            aria-label="Melody volume"
+            onChange={(event) => {
+              const next = Number(event.target.value)
+              setMelodyLevel(next)
+              setMelodyVolume(next)
+            }}
+          />
+        </div>
+        <div className="mixer__row">
+          <button
+            type="button"
+            className={chordsOn ? 'mixer__toggle mixer__toggle--on' : 'mixer__toggle'}
+            aria-pressed={chordsOn}
+            onClick={() => {
+              const next = !chordsOn
+              setChordsOn(next)
+              setChordMuted(!next)
+            }}
+          >
+            Chords
+          </button>
+          <input
+            className={chordsOn ? 'mixer__slider' : 'mixer__slider mixer__slider--off'}
+            type="range"
+            min="0"
+            max="100"
+            value={chordVolume}
+            aria-label="Chords volume"
+            onChange={(event) => {
+              const next = Number(event.target.value)
+              setChordLevel(next)
+              setChordVolume(next)
+            }}
+          />
+        </div>
+        {!melodyOn && !chordsOn ? <p className="mixer__hint">Both parts are muted</p> : null}
       </div>
       {loadingSounds ? (
         <p className="explore__status" role="status">

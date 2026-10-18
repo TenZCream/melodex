@@ -78,6 +78,8 @@ let loading = 0
 let loadingListener = null
 const ready = new Map()
 const inflight = new Map()
+const buses = { melody: null, chords: null }
+const outputs = []
 
 export function setMelodyInstrument(id) {
   melodyChoice = id
@@ -85,6 +87,27 @@ export function setMelodyInstrument(id) {
 
 export function setChordInstrument(id) {
   chordChoice = id
+}
+
+export function attachInstrumentBus(role, bus) {
+  buses[role] = bus
+  for (const output of outputs) {
+    if (output.role !== role) continue
+    try {
+      output.node.disconnect()
+    } catch {
+      // A disposed voice is already disconnected.
+    }
+    output.node.connect(bus)
+  }
+}
+
+function route(role, node) {
+  const bus = buses[role]
+  if (bus) node.connect(bus)
+  else node.toDestination()
+  outputs.push({ role, node })
+  return node
 }
 
 export function subscribeInstrumentLoading(listener) {
@@ -145,7 +168,7 @@ function wrapTrigger(node, { polyphonic }) {
 
 function synthVoice(role) {
   if (role === 'chords') {
-    const filter = new Filter({ frequency: 1200, type: 'lowpass', rolloff: -12, Q: 0.7 }).toDestination()
+    const filter = route(role, new Filter({ frequency: 1200, type: 'lowpass', rolloff: -12, Q: 0.7 }))
     const pad = new PolySynth(Synth, {
       oscillator: { type: 'fatsawtooth' },
       envelope: { attack: 0.05, decay: 0.4, sustain: 0.5, release: 0.8 },
@@ -153,20 +176,20 @@ function synthVoice(role) {
     }).connect(filter)
     return wrapTrigger(pad, { polyphonic: true })
   }
-  const melody = new Synth({
+  const melody = route(role, new Synth({
     oscillator: { type: 'triangle' },
     envelope: { attack: 0.02, decay: 0.14, sustain: 0.22, release: 0.35 },
     volume: -8,
-  }).toDestination()
+  }))
   return wrapTrigger(melody, { polyphonic: false })
 }
 
 function epianoVoice(role) {
   const volume = role === 'chords' ? -16 : -8
   if (role === 'chords') {
-    return wrapTrigger(new PolySynth(FMSynth, epianoOptions(volume)).toDestination(), { polyphonic: true })
+    return wrapTrigger(route(role, new PolySynth(FMSynth, epianoOptions(volume))), { polyphonic: true })
   }
-  return wrapTrigger(new FMSynth(epianoOptions(volume)).toDestination(), { polyphonic: false })
+  return wrapTrigger(route(role, new FMSynth(epianoOptions(volume))), { polyphonic: false })
 }
 
 async function samplerVoice(id, role) {
@@ -179,7 +202,7 @@ async function samplerVoice(id, role) {
     onerror: () => {
       failed = true
     },
-  }).toDestination()
+  })
   if (spec.attack) sampler.attack = spec.attack
   if (spec.release) sampler.release = spec.release
   try {
@@ -195,7 +218,7 @@ async function samplerVoice(id, role) {
     }
     throw new Error('samples')
   }
-  return wrapTrigger(sampler, { polyphonic: true })
+  return wrapTrigger(route(role, sampler), { polyphonic: true })
 }
 
 function remember(key, voice) {
