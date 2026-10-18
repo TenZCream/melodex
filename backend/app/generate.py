@@ -22,6 +22,7 @@ from dataclasses import dataclass, field
 import numpy as np
 
 from .melody import MAJOR_SCALE, MINOR_SCALE, Melody, Note, estimate_key, key_name
+from .compose import BAR, best_phrases
 from .search import MelodyIndex
 
 DEGREE_RANGE = (-7, 14)          # keep generated lines within ~3 octaves of scale steps
@@ -39,6 +40,8 @@ class Idea:
     novelty: float = 0.0
     nearest: dict | None = None
     chords: list[dict] = field(default_factory=list)
+    musicality: float = 0.0
+    progression: list[int] | None = None      # chord roots per bar (scale degrees), if composed
 
 
 # ------------------------------------------------------------------ scale helpers
@@ -175,6 +178,31 @@ def gen_continuation(seed_deg, seed_dur, sc, model, rng, length=8):
     return out_deg, out_dur
 
 
+def _seed_motif_rhythm(seed_dur):
+    """The seed's first bar of rhythm, if it fits a 4-beat bar exactly."""
+    t, out = 0.0, []
+    for d in seed_dur:
+        if t + d > BAR + 1e-6:
+            break
+        out.append(float(d))
+        t += d
+        if abs(t - BAR) < 1e-6:
+            return out
+    return None
+
+
+def gen_composed_continuation(seed_deg, seed_dur, sc, rng):
+    """An answer phrase: starts near where the user stopped, reuses their rhythm."""
+    start = seed_deg[-1] if seed_deg else 0
+    start = int(np.clip(start, -3, 10))
+    motif = _seed_motif_rhythm(seed_dur)
+    return best_phrases(rng, sc.mode, n_candidates=40, keep=6, start_deg=start, motif_rhythm=motif)
+
+
+def gen_composed_fresh(sc, rng):
+    return best_phrases(rng, sc.mode, n_candidates=40, keep=8)
+
+
 def gen_inversion(seed_deg, seed_dur):
     axis = seed_deg[0]
     return [axis - (g - axis) for g in seed_deg], list(seed_dur)
@@ -294,44 +322,41 @@ class Explorer:
             seed_beats, beat_sec = [], 0.5
 
         candidates: list[Idea] = []
-        attempts = 0
-        while len(candidates) < 40 and attempts < 80:
-            attempts += 1
-            kinds = ["continuation", "inversion", "sequence", "rhythm", "fresh"] if has_seed else ["fresh"]
-            kind = kinds[attempts % len(kinds)]
-            if kind == "continuation":
-                d, r = gen_continuation(seed_deg, seed_dur, sc, self.model, rng)
-                notes = _from_degrees(sc, d, r)   # only the new part; it follows the seed
-                title, desc = "Continuation", "What could come next: picks up where you stopped and brings it home."
-            elif kind == "inversion":
-                d, r = gen_inversion(seed_deg, seed_dur)
-                notes = _from_degrees(sc, d, r)
-                title, desc = "Mirror", "Your phrase turned upside-down: every rise becomes a fall."
-            elif kind == "sequence":
-                d, r = gen_sequence(seed_deg, seed_dur, rng)
-                notes = _from_degrees(sc, d, r)
-                title, desc = "Sequence", "Your opening motif, restated on a new step of the scale."
-            elif kind == "rhythm":
-                d, r = gen_rhythm_flip(seed_deg, seed_dur)
-                notes = _from_degrees(sc, d, r)
-                title, desc = "Rhythm flip", "Same notes, with long and short swapped."
-            else:
-                d, r = gen_fresh(self.model, rng)
-                notes = _from_degrees(sc, d, r)
-                title, desc = "Fresh idea", f"A new phrase in {key_name(sc.tonic_pc, sc.mode)}."
+
+        def add(kind, title, desc, degs, durs, mus=0.0, prog=None):
+            notes = _from_degrees(sc, degs, durs)
             if len(notes) < 4 or len({n.pitch for n in notes}) < 3:
-                continue
+                return
             if any(_same_pitches(notes, c.notes) for c in candidates):
-                continue
+                return
             novelty, nearest = self._novelty(notes)
-            candidates.append(Idea(kind, title, desc, notes, novelty, nearest))
+            candidates.append(Idea(kind, title, desc, notes, novelty, nearest,
+                                   musicality=mus, progression=prog))
+
+        key_txt = key_name(sc.tonic_pc, sc.mode)
+        if has_seed:
+            for mus, d, r, prog in gen_composed_continuation(seed_deg, seed_dur, sc, rng):
+                add("continuation", "Continuation",
+                    "An answer to your phrase: reuses your rhythm, follows a real chord "
+                    "progression, and resolves home.", d, r, mus, prog)
+            d, r = gen_inversion(seed_deg, seed_dur)
+            add("inversion", "Mirror", "Your phrase turned upside-down: every rise becomes a fall.", d, r)
+            for _ in range(4):
+                d, r = gen_sequence(seed_deg, seed_dur, rng)
+                add("sequence", "Sequence", "Your opening motif, restated on a new step of the scale.", d, r)
+            d, r = gen_rhythm_flip(seed_deg, seed_dur)
+            add("rhythm", "Rhythm flip", "Same notes, with long and short swapped.", d, r)
+        for mus, d, r, prog in gen_composed_fresh(sc, rng):
+            add("fresh", "Fresh idea",
+                f"A new 4-bar phrase in {key_txt} over a {_prog_name(prog, sc.mode)} progression.",
+                d, r, mus, prog)
 
         kept = [c for c in candidates if c.novelty >= FAMILIAR]
         dropped = len(candidates) - len(kept)
-        # one of each kind first (most novel), then fill by novelty
-        kept.sort(key=lambda c: -c.novelty)
+        # rank: composed ideas by musicality, then novelty; one of each kind first
+        kept.sort(key=lambda c: (-(c.musicality or 0.0), -c.novelty))
         chosen: list[Idea] = []
-        for k in ["continuation", "inversion", "sequence", "rhythm", "fresh"]:
+        for k in ["continuation", "fresh", "inversion", "sequence", "rhythm"]:
             for c in kept:
                 if c.kind == k and c not in chosen:
                     chosen.append(c)
@@ -343,7 +368,8 @@ class Explorer:
                 chosen.append(c)
         chosen = chosen[:num_ideas]
         for c in chosen:
-            c.chords = suggest_chords(c.notes, sc)
+            c.chords = chords_from_progression(c.progression, sc, c.notes) if c.progression \
+                else suggest_chords(c.notes, sc)
 
         tempo = float(np.clip(round(60.0 / max(beat_sec, 0.2)), 60, 160))
         return {
@@ -354,6 +380,39 @@ class Explorer:
             "candidates_considered": len(candidates),
             "too_familiar_dropped": dropped,
         }
+
+
+_ROMAN_MAJOR = ["I", "ii", "iii", "IV", "V", "vi", "vii°"]
+_ROMAN_MINOR = ["i", "ii°", "III", "iv", "V", "VI", "VII"]
+
+
+def _prog_name(prog, mode) -> str:
+    romans = _ROMAN_MAJOR if mode == "major" else _ROMAN_MINOR
+    return "–".join(romans[r % 7] for r in prog[:4])
+
+
+def chords_from_progression(prog, sc: Scale, notes: list[Note]) -> list[dict]:
+    """One chord per bar from the composed progression."""
+    romans = _ROMAN_MAJOR if sc.mode == "major" else _ROMAN_MINOR
+    end = notes[-1].start + notes[-1].duration if notes else BAR * len(prog)
+    out = []
+    for i, root in enumerate(prog):
+        start = i * BAR
+        if start >= end - 1e-6:
+            break
+        roman = romans[root % 7]
+        pc = (sc.steps[root % 7] + sc.tonic_pc) % 12
+        if sc.mode == "minor" and roman == "V":
+            quality = ""                                   # major dominant in minor
+        elif roman.endswith("°"):
+            quality = "dim"
+        elif roman[0].islower():
+            quality = "m"
+        else:
+            quality = ""
+        out.append({"start": start, "duration": min(BAR, end - start), "roman": roman,
+                    "symbol": f"{_NAMES[pc]}{quality}"})
+    return out
 
 
 def _same_pitches(a: list[Note], b: list[Note]) -> bool:

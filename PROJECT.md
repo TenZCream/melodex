@@ -222,3 +222,21 @@ similar to any indexed song (20 runs on Happy Birthday). ~0.2 s per request.
 
 **Weak:** the Markov model only learns from 30 tunes, so fresh ideas are simple;
 inversions of very famous tunes often land in "echoes".
+
+### Checkpoint 6 — melodies that sound composed (Sat ~5:20 PM PT)
+
+Lexing: "how do we make the fresh melodies actually sound good?"
+**Built `backend/app/compose.py`**, a rule-based composer used for Fresh ideas and
+Continuations:
+- harmony first: a real progression (I–V–vi–IV, I–IV–V–I, I–vi–IV–V, ii–V–I, minor
+  i–VI–III–VII …), chord tones on strong beats, steps between
+- repetition: bar 3 reuses bar 1's rhythm and contour; continuations reuse the user's
+  own first-bar rhythm so they sound like an answer
+- mostly steps, gap-fill after leaps, singable range, ending on the tonic, with an extra
+  resolving I bar when the progression ends elsewhere (V → I cadence)
+- generate 40, score with a musicality heuristic (0–1), keep the best; ≤ 2 per progression
+
+Musicality score (same heuristic): real indexed tunes avg 0.75, old Markov ideas 0.82,
+composer best picks ~0.98. (The heuristic rewards "textbook" writing; it's a guide, not
+a judge of taste.) Chords returned per bar from the progression. API shape unchanged.
+All tests pass; 9/9 real recordings still correct.
